@@ -1,19 +1,22 @@
 /* ========================================================= */
-/* MTM Sidoarjo - Driver App Styling System                  */
+/* Driver App Styling System                  */
 /* Standar AGENTS.md: Clean, Zero-Slop, Mobile-First         */
 /* ========================================================= */
 
 :root {
-  --primary: #1D4ED8;        /* Driver Royal Blue */
+  --primary: #1D4ED8;
+  /* Driver Royal Blue */
   --primary-hover: #1E40AF;
   --primary-light: #EFF6FF;
   --primary-border: #BFDBFE;
 
-  --accent-green: #059669;   /* Earnings & Cash */
+  --accent-green: #059669;
+  /* Earnings & Cash */
   --accent-green-bg: #ECFDF5;
   --accent-green-border: #A7F3D0;
 
-  --accent-amber: #D97706;   /* Jastip & COD */
+  --accent-amber: #D97706;
+  /* Jastip & COD */
   --accent-amber-bg: #FFFBEB;
   --accent-amber-border: #FDE68A;
 
@@ -206,20 +209,20 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.switch-toggle input:checked + .switch-slider {
+.switch-toggle input:checked+.switch-slider {
   background-color: #10B981;
 }
 
-.switch-toggle input:checked + .switch-slider:before {
+.switch-toggle input:checked+.switch-slider:before {
   transform: translateX(20px);
 }
 
-.switch-toggle input:disabled + .switch-slider {
+.switch-toggle input:disabled+.switch-slider {
   background-color: #FCA5A5;
   cursor: not-allowed;
 }
 
-.switch-toggle input:disabled + .switch-slider:before {
+.switch-toggle input:disabled+.switch-slider:before {
   background-color: #DC2626;
 }
 
@@ -312,7 +315,9 @@ body {
 }
 
 @media (max-width: 600px) {
-  .wallet-grid { grid-template-columns: 1fr; }
+  .wallet-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .wallet-card {
@@ -339,8 +344,13 @@ body {
   color: var(--text-main);
 }
 
-.wallet-val.green { color: var(--accent-green); }
-.wallet-val.amber { color: var(--accent-amber); }
+.wallet-val.green {
+  color: var(--accent-green);
+}
+
+.wallet-val.amber {
+  color: var(--accent-amber);
+}
 
 /* SECTION HEADINGS */
 .section-title-row {
@@ -385,9 +395,17 @@ body {
 }
 
 @keyframes pulseCard {
-  0% { border-color: var(--primary-border); }
-  50% { border-color: var(--primary); }
-  100% { border-color: var(--primary-border); }
+  0% {
+    border-color: var(--primary-border);
+  }
+
+  50% {
+    border-color: var(--primary);
+  }
+
+  100% {
+    border-color: var(--primary-border);
+  }
 }
 
 .offer-header {
@@ -406,9 +424,20 @@ body {
   border-radius: var(--radius-pill);
 }
 
-.type-pill.shopping { background: #FEF3C7; color: #B45309; }
-.type-pill.service { background: #EDE9FE; color: #6D28D9; }
-.type-pill.delivery { background: #EFF6FF; color: #1D4ED8; }
+.type-pill.shopping {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.type-pill.service {
+  background: #EDE9FE;
+  color: #6D28D9;
+}
+
+.type-pill.delivery {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
 
 /* TALANGAN BANNER */
 .talangan-banner {
@@ -489,8 +518,13 @@ body {
   margin-top: 2px;
 }
 
-.route-pin.pickup { background: #2563EB; }
-.route-pin.dropoff { background: #059669; }
+.route-pin.pickup {
+  background: #2563EB;
+}
+
+.route-pin.dropoff {
+  background: #059669;
+}
 
 .route-text-title {
   font-weight: 800;
@@ -512,7 +546,9 @@ body {
 }
 
 @media (max-width: 480px) {
-  .btn-action-row { grid-template-columns: 1fr; }
+  .btn-action-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .btn-accept {
@@ -528,7 +564,9 @@ body {
   font-family: inherit;
 }
 
-.btn-accept:hover { background: #047857; }
+.btn-accept:hover {
+  background: #047857;
+}
 
 .btn-reject {
   background: #FFFFFF;
@@ -543,7 +581,9 @@ body {
   font-family: inherit;
 }
 
-.btn-reject:hover { background: #F8FAFC; }
+.btn-reject:hover {
+  background: #F8FAFC;
+}
 
 .btn-workflow {
   width: 100%;
@@ -560,7 +600,9 @@ body {
   font-family: inherit;
 }
 
-.btn-workflow:hover { background: var(--primary-hover); }
+.btn-workflow:hover {
+  background: var(--primary-hover);
+}
 
 /* ACTIVE ORDER BOX */
 .active-task-box {

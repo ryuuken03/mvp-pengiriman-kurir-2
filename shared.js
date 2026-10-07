@@ -274,7 +274,7 @@ function calculateDeliveryFee(distanceKm, state = null) {
 // =========================================================================
 function buildWhatsAppOrderDraft(order) {
   const lines = [
-    'Halo MTM Sidoarjo, saya mau konfirmasi pesanan:',
+    'Halo Bantal Malang, saya mau konfirmasi pesanan:',
     ''
   ];
 
@@ -321,7 +321,7 @@ function buildWhatsAppOrderDraft(order) {
 function resetAllDataToDefault() {
   try {
     localStorage.removeItem(LOKALKIRIM_V2_STORAGE_KEY);
-  } catch (e) {}
+  } catch (e) { }
   const fresh = JSON.parse(JSON.stringify(LOKALKIRIM_V2_INITIAL_DATA));
   saveSharedState(fresh, true, 'RESET_ALL');
   return fresh;

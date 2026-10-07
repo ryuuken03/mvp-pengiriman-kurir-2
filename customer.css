@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MTM Sidoarjo Customer App Stylesheet
+   Customer App Stylesheet
    Standar AGENTS.md: Anti "AI Slop", Bebas Emoji, Modern & Mobile-First
    ========================================================================== */
 
@@ -37,7 +37,9 @@
   --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -329,7 +331,8 @@ body {
   border-radius: var(--radius-sm);
   background: #FFFFFF;
   color: var(--text-main);
-  min-height: 44px; /* AGENTS.md min touch target */
+  min-height: 44px;
+  /* AGENTS.md min touch target */
   transition: border-color 0.15s ease;
 }
 

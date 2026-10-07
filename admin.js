@@ -1,5 +1,5 @@
 /**
- * MTM Sidoarjo - Admin Console & Dispatcher Logic
+ * Admin Console & Dispatcher Logic
  * Monitoring real-time 3 pilar layanan, pricing engine dinamis, dan buku kas armada.
  * Standar AGENTS.md: Bahasa Baku, Tanpa Emoji, Format Baku.
  */

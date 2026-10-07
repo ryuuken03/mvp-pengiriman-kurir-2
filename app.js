@@ -1,5 +1,5 @@
 /**
- * MTM Sidoarjo v2.0 - Simulator Hub Controller
+ * v2.0 - Simulator Hub Controller
  * Mengatur tampilan 3 frame terpadu (Customer, Driver, Admin)
  * dan menjalankan 3 skenario simulasi otomatis:
  * 1. Minta Dibelikan (Jastip Bebas Warung PKL dengan Talangan)
@@ -231,7 +231,7 @@ function reloadAllIframes() {
     if (el && el.contentWindow) {
       try {
         el.contentWindow.location.reload();
-      } catch (e) {}
+      } catch (e) { }
     }
   });
 }
