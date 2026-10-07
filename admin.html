@@ -68,34 +68,97 @@
       </div>
 
       <form id="formPricingEngine">
-        <div class="pricing-form-grid">
-          <div>
-            <label class="input-label" for="cfgDeliveryBase">Tarif Dasar Kurir P2P (Min s.d. 3 km)</label>
-            <input type="number" id="cfgDeliveryBase" class="input-field" step="500" required>
+        <!-- 3 PILAR CARDS -->
+        <div class="pricing-pillars-grid">
+
+          <!-- PILAR 1: MINTA DIBELIKAN -->
+          <div class="pricing-pillar-card">
+            <div class="pillar-card-header">
+              <span class="pillar-card-title">Minta Dibelikan</span>
+              <!-- <span class="pillar-tag shopping">Pilar 1</span> -->
+            </div>
+
+            <div class="pricing-field-group">
+              <label class="input-label" for="cfgShopService">Biaya Jasa Beli (Flat)</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgShopService" class="input-field" step="500" required>
+              </div>
+              <span class="input-subtext">Jasa titip beli warung per pesanan</span>
+            </div>
+
+            <div class="pricing-field-group">
+              <label class="input-label" for="cfgShopPerKm">Ongkir Belanja (per km)</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgShopPerKm" class="input-field" step="500" required>
+                <!-- <span class="input-suffix">/ km</span> -->
+              </div>
+              <span class="input-subtext">Dihitung dari rute jalan raya nyata</span>
+            </div>
           </div>
-          <div>
-            <label class="input-label" for="cfgDeliveryPerKm">Tarif Kurir P2P (per KM)</label>
-            <input type="number" id="cfgDeliveryPerKm" class="input-field" step="500" required>
+
+          <!-- PILAR 2: SERVIS & BANTUAN -->
+          <div class="pricing-pillar-card">
+            <div class="pillar-card-header">
+              <span class="pillar-card-title">Servis & Bantuan</span>
+              <!-- <span class="pillar-tag service">Pilar 2</span> -->
+            </div>
+
+            <div class="pricing-field-group">
+              <label class="input-label" for="cfgServiceHourly">Tarif Tenaga Kerja (per jam)</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgServiceHourly" class="input-field" step="500" required>
+                <!-- <span class="input-suffix">/ jam</span> -->
+              </div>
+              <span class="input-subtext">Tarif tenaga bantuan harian per jam</span>
+            </div>
           </div>
-          <div>
-            <label class="input-label" for="cfgShopService">Biaya Jasa Minta Dibelikan (Flat)</label>
-            <input type="number" id="cfgShopService" class="input-field" step="500" required>
+
+          <!-- PILAR 3: ANTAR / KURIR P2P -->
+          <div class="pricing-pillar-card">
+            <div class="pillar-card-header">
+              <span class="pillar-card-title">Antar / Kurir P2P</span>
+              <!-- <span class="pillar-tag delivery">Pilar 3</span> -->
+            </div>
+
+            <div class="pricing-field-group">
+              <label class="input-label" for="cfgDeliveryBase">Tarif Minimum (s.d. 3 km)</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgDeliveryBase" class="input-field" step="500" required>
+              </div>
+              <span class="input-subtext">Tarif dasar pengiriman dokumen/paket</span>
+            </div>
+
+            <div class="pricing-field-group">
+              <label class="input-label" for="cfgDeliveryPerKm">Tarif per KM Lanjutan</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgDeliveryPerKm" class="input-field" step="500" required>
+                <!-- <span class="input-suffix">/ km</span> -->
+              </div>
+              <span class="input-subtext">Dikenakan setelah jarak di atas 3 km</span>
+            </div>
           </div>
-          <div>
-            <label class="input-label" for="cfgShopPerKm">Ongkir Antar Belanjaan (per KM)</label>
-            <input type="number" id="cfgShopPerKm" class="input-field" step="500" required>
-          </div>
-          <div>
-            <label class="input-label" for="cfgServiceHourly">Tarif Servis & Bantuan (per Jam)</label>
-            <input type="number" id="cfgServiceHourly" class="input-field" step="500" required>
-          </div>
-          <div>
-            <label class="input-label" for="cfgPlatformFeePercent">Bagi Hasil Platform (%)</label>
-            <input type="number" id="cfgPlatformFeePercent" class="input-field" min="5" max="30" step="1" required>
-          </div>
+
         </div>
 
-        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+        <!-- STRIP BAGI HASIL PLATFORM & TOMBOL SIMPAN -->
+        <div class="pricing-platform-strip">
+          <div class="platform-fee-row">
+            <div>
+              <label class="input-label" for="cfgPlatformFeePercent">Bagi Hasil Platform</label>
+              <span class="input-subtext">Komisi platform dari ongkir/jasa (Mitra menerima sisa)</span>
+            </div>
+            <div class="input-group" style="width: 100px;">
+              <input type="number" id="cfgPlatformFeePercent" class="input-field" min="5" max="30" step="1" required
+                style="text-align: center;">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+
           <button type="submit" class="btn-admin" id="btnSavePricing">
             Simpan Konfigurasi Tarif
           </button>

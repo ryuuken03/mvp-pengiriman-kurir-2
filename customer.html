@@ -7,8 +7,10 @@
   <title>MTM Sidoarjo - Jasa Bantuan Lokal (Minta Dibelikan, Servis, Antar)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
   <!-- LEAFLET MAP & OPENSTREETMAP STYLES -->
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="customer.css">
@@ -43,21 +45,21 @@
 
         <!-- PILAR 1: MINTA DIBELIKAN -->
         <button type="button" class="service-card active" data-tab="tab-shopping" id="cardServiceShopping">
-          <div class="service-indicator">Pilar 1</div>
+          <!-- <div class="service-indicator">Pilar 1</div> -->
           <div class="service-title">Minta Dibelikan</div>
           <div class="service-desc">Makanan, Warung Bebas, Apotek & Sembako</div>
         </button>
 
         <!-- PILAR 2: SERVIS & BANTUAN -->
         <button type="button" class="service-card" data-tab="tab-service" id="cardServiceService">
-          <div class="service-indicator">Pilar 2</div>
+          <!-- <div class="service-indicator">Pilar 2</div> -->
           <div class="service-title">Servis & Bantuan</div>
           <div class="service-desc">Bersih-bersih, Angkat Barang, Temenin & Asisten</div>
         </button>
 
         <!-- PILAR 3: ANTAR / KIRIM -->
         <button type="button" class="service-card" data-tab="tab-delivery" id="cardServiceDelivery">
-          <div class="service-indicator">Pilar 3</div>
+          <!-- <div class="service-indicator">Pilar 3</div> -->
           <div class="service-title">Antar / Kirim</div>
           <div class="service-desc">Kirim Paket Dokumen & Antar Jemput Warga</div>
         </button>
@@ -82,7 +84,8 @@
         <div class="surface-header">
           <div>
             <h2 class="surface-title">Minta Dibelikan (Personal Shopper)</h2>
-            <div class="surface-caption">Mitra membelikan di lokasi pilihan Anda dengan sistem dana talangan tunai (COD).</div>
+            <div class="surface-caption">Mitra membelikan di lokasi pilihan Anda dengan sistem dana talangan tunai
+              (COD).</div>
           </div>
         </div>
 
@@ -101,17 +104,21 @@
           <div class="grid-2-col">
             <div class="form-field">
               <label class="field-label" for="shopStoreName">Tempat Pembelian (Warung / Toko / Kios)</label>
-              <input type="text" id="shopStoreName" class="field-input" value="Bebek Goreng H. Slamet" placeholder="Contoh: Nasi Goreng Pak Min / Apotek K-24" required>
+              <input type="text" id="shopStoreName" class="field-input" value="Bebek Goreng H. Slamet"
+                placeholder="Contoh: Nasi Goreng Pak Min / Apotek K-24" required>
             </div>
             <div class="form-field">
               <label class="field-label" for="shopStoreAddress">Lokasi Tempat Pembelian (Titik A)</label>
-              <input type="text" id="shopStoreAddress" class="field-input" value="Jl. Taman Pinang Indah No. 8, Sidoarjo" placeholder="Patokan atau alamat tempat beli" required>
+              <input type="text" id="shopStoreAddress" class="field-input"
+                value="Jl. Taman Pinang Indah No. 8, Sidoarjo" placeholder="Patokan atau alamat tempat beli" required>
             </div>
           </div>
 
           <div class="form-field">
             <label class="field-label" for="shopItems">Daftar Barang yang Dibelikan</label>
-            <textarea id="shopItems" class="field-textarea" placeholder="Tulis rincian menu/barang, porsi, atau varian (Contoh: 2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah)" required>2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah</textarea>
+            <textarea id="shopItems" class="field-textarea"
+              placeholder="Tulis rincian menu/barang, porsi, atau varian (Contoh: 2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah)"
+              required>2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah</textarea>
           </div>
 
           <div class="grid-2-col">
@@ -121,13 +128,15 @@
             </div>
             <div class="form-field">
               <label class="field-label" for="shopDropoff">Alamat Pengantaran ke Lokasi Anda (Titik B)</label>
-              <input type="text" id="shopDropoff" class="field-input" value="Jl. Pahlawan No. 15, Sidoarjo Kota" required>
+              <input type="text" id="shopDropoff" class="field-input" value="Jl. Pahlawan No. 15, Sidoarjo Kota"
+                required>
             </div>
           </div>
 
           <div class="notice-box">
             <div class="notice-title">Sistem Talangan Tunai Mitra</div>
-            <div class="notice-desc">Mitra membayarkan belanjaan di tempat terlebih dahulu. Anda mengganti biaya sesuai struk riil ditambah ongkir dan biaya jasa saat barang tiba di lokasi.</div>
+            <div class="notice-desc">Mitra membayarkan belanjaan di tempat terlebih dahulu. Anda mengganti biaya sesuai
+              struk riil ditambah ongkir dan biaya jasa saat barang tiba di lokasi.</div>
           </div>
 
           <!-- PETA LEAFLET & OPENSTREETMAP RUTE BERKENDARA NYATA -->
@@ -162,15 +171,19 @@
             <!-- PRESET RUTE CEPAT SIDOARJO -->
             <div class="preset-route-row">
               <span class="preset-caption">Rute Cepat Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('taman_pinang_pahlawan')">Taman Pinang &rarr; Jl. Pahlawan</button>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('larangan_alun2')">Pasar Larangan &rarr; Alun-Alun</button>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('waru_sidoarjo')">Ruko Waru &rarr; Sidoarjo Kota</button>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('taman_pinang_pahlawan')">Taman Pinang
+                &rarr; Jl. Pahlawan</button>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('larangan_alun2')">Pasar Larangan &rarr;
+                Alun-Alun</button>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('waru_sidoarjo')">Ruko Waru &rarr;
+                Sidoarjo Kota</button>
             </div>
           </div>
 
           <div class="form-field" style="margin-top: 10px;">
             <label class="field-label" for="shopNotes">Catatan Tambahan (Opsional)</label>
-            <input type="text" id="shopNotes" class="field-input" placeholder="Contoh: Bebek minta bagian paha, uang kembalian disiapkan">
+            <input type="text" id="shopNotes" class="field-input"
+              placeholder="Contoh: Bebek minta bagian paha, uang kembalian disiapkan">
           </div>
 
           <!-- Kalkulasi Biaya Transparan -->
@@ -213,7 +226,8 @@
         <div class="surface-header">
           <div>
             <h2 class="surface-title">Servis & Jasa Bantuan Tenaga</h2>
-            <div class="surface-caption">Bantuan tenaga harian, bersih-bersih, angkat barang, pendampingan, atau urusan lokal lainnya.</div>
+            <div class="surface-caption">Bantuan tenaga harian, bersih-bersih, angkat barang, pendampingan, atau urusan
+              lokal lainnya.</div>
           </div>
         </div>
 
@@ -242,13 +256,15 @@
             </div>
             <div class="form-field">
               <label class="field-label" for="serviceLocation">Lokasi Pengerjaan Tugas</label>
-              <input type="text" id="serviceLocation" class="field-input" value="Perumahan Taman Pinang Indah Blok B-4, Sidoarjo" required>
+              <input type="text" id="serviceLocation" class="field-input"
+                value="Perumahan Taman Pinang Indah Blok B-4, Sidoarjo" required>
             </div>
           </div>
 
           <div class="form-field">
             <label class="field-label" for="serviceDesc">Rincian Instruksi / Tugas yang Dikerjakan</label>
-            <textarea id="serviceDesc" class="field-textarea" placeholder="Jelaskan kebutuhan pekerjaan secara spesifik" required>Bantu sapu, pel, dan rapikan kardus di ruang gudang belakang rumah lantai 1.</textarea>
+            <textarea id="serviceDesc" class="field-textarea" placeholder="Jelaskan kebutuhan pekerjaan secara spesifik"
+              required>Bantu sapu, pel, dan rapikan kardus di ruang gudang belakang rumah lantai 1.</textarea>
           </div>
 
           <!-- PETA LEAFLET & OPENSTREETMAP LOKASI TUGAS (SERVIS & BANTUAN) -->
@@ -267,7 +283,8 @@
             <!-- PRESET LOKASI CEPAT SIDOARJO -->
             <div class="preset-route-row">
               <span class="preset-caption">Pilihan Lokasi Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('taman_pinang')">Taman Pinang</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('taman_pinang')">Taman
+                Pinang</button>
               <button type="button" class="preset-btn" onclick="applyServicePreset('puri_indah')">Puri Indah</button>
               <button type="button" class="preset-btn" onclick="applyServicePreset('alun_alun')">Alun-Alun</button>
               <button type="button" class="preset-btn" onclick="applyServicePreset('buduran')">Buduran</button>
@@ -293,7 +310,8 @@
 
           <div class="form-field">
             <label class="field-label" for="serviceNotes">Catatan Tambahan (Opsional)</label>
-            <input type="text" id="serviceNotes" class="field-input" placeholder="Contoh: Alat kebersihan sudah disediakan di lokasi">
+            <input type="text" id="serviceNotes" class="field-input"
+              placeholder="Contoh: Alat kebersihan sudah disediakan di lokasi">
           </div>
 
           <!-- Kalkulasi Biaya -->
@@ -332,7 +350,8 @@
         <div class="surface-header">
           <div>
             <h2 class="surface-title">Antar / Kirim Cepat (Point-to-Point)</h2>
-            <div class="surface-caption">Pengantaran dokumen, barang pribadi, atau jemput antar warga tanpa perantara.</div>
+            <div class="surface-caption">Pengantaran dokumen, barang pribadi, atau jemput antar warga tanpa perantara.
+            </div>
           </div>
         </div>
 
@@ -366,7 +385,8 @@
 
           <div class="form-field">
             <label class="field-label" for="delDropoff">Titik Pengantaran (Pin B)</label>
-            <input type="text" id="delDropoff" class="field-input" value="Perumahan Buduran Asri Blok C-2, Buduran" required>
+            <input type="text" id="delDropoff" class="field-input" value="Perumahan Buduran Asri Blok C-2, Buduran"
+              required>
           </div>
 
           <div class="grid-2-col">
@@ -381,7 +401,8 @@
             </div>
             <div class="form-field">
               <label class="field-label" for="delItemDesc">Rincian Barang / Instruksi</label>
-              <input type="text" id="delItemDesc" class="field-input" value="Sertifikat Dokumen & Akta Notaris dalam map plastik" required>
+              <input type="text" id="delItemDesc" class="field-input"
+                value="Sertifikat Dokumen & Akta Notaris dalam map plastik" required>
             </div>
           </div>
 
@@ -417,15 +438,19 @@
             <!-- PRESET RUTE CEPAT SIDOARJO -->
             <div class="preset-route-row">
               <span class="preset-caption">Rute Cepat Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('pahlawan_buduran')">Pahlawan &rarr; Buduran (4,5 km)</button>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('alun2_puri_indah')">Alun-Alun &rarr; Puri Indah (3,8 km)</button>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('candi_kota')">Candi &rarr; Sidoarjo Kota (4,9 km)</button>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('pahlawan_buduran')">Pahlawan &rarr;
+                Buduran (4,5 km)</button>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('alun2_puri_indah')">Alun-Alun &rarr;
+                Puri Indah (3,8 km)</button>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('candi_kota')">Candi &rarr; Sidoarjo Kota
+                (4,9 km)</button>
             </div>
           </div>
 
           <div class="form-field" style="margin-top: 10px;">
             <label class="field-label" for="delNotes">Catatan Tambahan (Opsional)</label>
-            <input type="text" id="delNotes" class="field-input" placeholder="Contoh: Dokumen jangan dilipat dan lindungi dari hujan">
+            <input type="text" id="delNotes" class="field-input"
+              placeholder="Contoh: Dokumen jangan dilipat dan lindungi dari hujan">
           </div>
 
           <!-- Kalkulasi Biaya -->
