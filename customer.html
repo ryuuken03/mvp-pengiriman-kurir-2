@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTM Sidoarjo - Jasa Bantuan Lokal (Minta Dibelikan, Servis, Antar)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- LEAFLET MAP & OPENSTREETMAP STYLES -->
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="customer.css">
+</head>
+
+<body>
+
+  <!-- TOP COMMAND BAR -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand-block">
+        <div class="brand-symbol">MTM</div>
+        <div>
+          <h1 class="brand-name">MTM Sidoarjo</h1>
+          <p class="brand-sub">Jasa Bantuan Lokal &bull; Sidoarjo & Sekitarnya</p>
+        </div>
+      </div>
+
+      <!-- RADAR ARMADA SIAGA -->
+      <div class="radar-status" id="radarBadge" title="Status armada mitra aktif di wilayah Sidoarjo">
+        <span class="radar-ping"></span>
+        <span id="radarText">4 Mitra Siaga</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO SERVICE SELECTOR (3 PILAR UTAMA MTM) -->
+    <section class="services-hero">
+      <div class="services-grid">
+
+        <!-- PILAR 1: MINTA DIBELIKAN -->
+        <button type="button" class="service-card active" data-tab="tab-shopping" id="cardServiceShopping">
+          <div class="service-indicator">Pilar 1</div>
+          <div class="service-title">Minta Dibelikan</div>
+          <div class="service-desc">Makanan, Warung Bebas, Apotek & Sembako</div>
+        </button>
+
+        <!-- PILAR 2: SERVIS & BANTUAN -->
+        <button type="button" class="service-card" data-tab="tab-service" id="cardServiceService">
+          <div class="service-indicator">Pilar 2</div>
+          <div class="service-title">Servis & Bantuan</div>
+          <div class="service-desc">Bersih-bersih, Angkat Barang, Temenin & Asisten</div>
+        </button>
+
+        <!-- PILAR 3: ANTAR / KIRIM -->
+        <button type="button" class="service-card" data-tab="tab-delivery" id="cardServiceDelivery">
+          <div class="service-indicator">Pilar 3</div>
+          <div class="service-title">Antar / Kirim</div>
+          <div class="service-desc">Kirim Paket Dokumen & Antar Jemput Warga</div>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- SUB-NAV / ORDER TRACKER BUTTON -->
+    <nav class="sub-nav-bar">
+      <div class="sub-nav-label" id="activeSectionTitle">Formulir Layanan: Minta Dibelikan</div>
+      <button type="button" class="btn-orders-tab" id="btnOrdersTab" data-tab="tab-orders">
+        <span>Pesanan Saya</span>
+        <span class="badge-order-count" id="activeOrderBadge">0</span>
+      </button>
+    </nav>
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: MINTA DIBELIKAN (SHOPPING / JASTIP BEBAS)         -->
+    <!-- ======================================================== -->
+    <section class="tab-pane active" id="tab-shopping">
+      <div class="surface-box">
+        <div class="surface-header">
+          <div>
+            <h2 class="surface-title">Minta Dibelikan (Personal Shopper)</h2>
+            <div class="surface-caption">Mitra membelikan di lokasi pilihan Anda dengan sistem dana talangan tunai (COD).</div>
+          </div>
+        </div>
+
+        <form id="formShopping">
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="shopCustomerName">Nama Pemesan</label>
+              <input type="text" id="shopCustomerName" class="field-input" value="Rian Pratama" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopCustomerPhone">Nomor WhatsApp</label>
+              <input type="tel" id="shopCustomerPhone" class="field-input" value="0812-3456-7890" required>
+            </div>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="shopStoreName">Tempat Pembelian (Warung / Toko / Kios)</label>
+              <input type="text" id="shopStoreName" class="field-input" value="Bebek Goreng H. Slamet" placeholder="Contoh: Nasi Goreng Pak Min / Apotek K-24" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopStoreAddress">Lokasi Tempat Pembelian (Titik A)</label>
+              <input type="text" id="shopStoreAddress" class="field-input" value="Jl. Taman Pinang Indah No. 8, Sidoarjo" placeholder="Patokan atau alamat tempat beli" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="shopItems">Daftar Barang yang Dibelikan</label>
+            <textarea id="shopItems" class="field-textarea" placeholder="Tulis rincian menu/barang, porsi, atau varian (Contoh: 2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah)" required>2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah</textarea>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="shopEstimate">Perkiraan Uang Belanja (Talangan Mitra)</label>
+              <input type="number" id="shopEstimate" class="field-input" min="5000" step="5000" value="55000" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopDropoff">Alamat Pengantaran ke Lokasi Anda (Titik B)</label>
+              <input type="text" id="shopDropoff" class="field-input" value="Jl. Pahlawan No. 15, Sidoarjo Kota" required>
+            </div>
+          </div>
+
+          <div class="notice-box">
+            <div class="notice-title">Sistem Talangan Tunai Mitra</div>
+            <div class="notice-desc">Mitra membayarkan belanjaan di tempat terlebih dahulu. Anda mengganti biaya sesuai struk riil ditambah ongkir dan biaya jasa saat barang tiba di lokasi.</div>
+          </div>
+
+          <!-- PETA LEAFLET & OPENSTREETMAP RUTE BERKENDARA NYATA -->
+          <div class="map-card-wrapper">
+            <div class="map-header-row">
+              <div class="map-header-title">
+                <span>Peta Rute Jalan Raya (Leaflet & OpenStreetMap)</span>
+                <span class="route-badge-live" id="shopRouteStatus">Rute Berkendara Nyata</span>
+              </div>
+              <div class="map-hint-text">Geser Pin A (Beli) atau Pin B (Antar) pada peta</div>
+            </div>
+
+            <!-- KANVAS PETA -->
+            <div class="map-canvas-container" id="shopMapCanvas"></div>
+
+            <!-- STRIP INFORMASI RUTE HASIL KALKULASI BERKENDARA NYATA -->
+            <div class="route-stats-strip">
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Jarak Rute Jalan Raya:</span>
+                <span class="stat-meta-val" id="shopDistanceText">2,6 km</span>
+              </div>
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Estimasi Waktu Tempuh:</span>
+                <span class="stat-meta-val" id="shopDurationText">~4 Menit</span>
+              </div>
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Navigasi:</span>
+                <span class="stat-meta-val" style="color: var(--brand-accent);">Jalan Raya Nyata</span>
+              </div>
+            </div>
+
+            <!-- PRESET RUTE CEPAT SIDOARJO -->
+            <div class="preset-route-row">
+              <span class="preset-caption">Rute Cepat Sidoarjo:</span>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('taman_pinang_pahlawan')">Taman Pinang &rarr; Jl. Pahlawan</button>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('larangan_alun2')">Pasar Larangan &rarr; Alun-Alun</button>
+              <button type="button" class="preset-btn" onclick="applyShopPreset('waru_sidoarjo')">Ruko Waru &rarr; Sidoarjo Kota</button>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top: 10px;">
+            <label class="field-label" for="shopNotes">Catatan Tambahan (Opsional)</label>
+            <input type="text" id="shopNotes" class="field-input" placeholder="Contoh: Bebek minta bagian paha, uang kembalian disiapkan">
+          </div>
+
+          <!-- Kalkulasi Biaya Transparan -->
+          <div class="price-breakdown-card">
+            <div class="price-row">
+              <span>Perkiraan Talangan Belanja (Struk Riil):</span>
+              <span id="shopGoodsCostText" class="price-val">Rp 55.000</span>
+            </div>
+            <div class="price-row">
+              <span>Biaya Jasa Beli:</span>
+              <span id="shopServiceFeeText" class="price-val">Rp 5.000</span>
+            </div>
+            <div class="price-row">
+              <span>Ongkos Pengantaran Jalan Raya:</span>
+              <span id="shopDeliveryFeeText" class="price-val">Rp 6.500</span>
+            </div>
+            <div class="price-row total-row">
+              <span>Total Estimasi Bayar di Tempat (COD):</span>
+              <span id="shopTotalText" class="price-val highlight">Rp 66.500</span>
+            </div>
+          </div>
+
+          <div class="action-grid">
+            <button type="submit" class="btn-primary" id="btnSubmitShopping">
+              Kirim Pesanan ke Mitra
+            </button>
+            <a href="#" class="btn-secondary" id="btnWaShopping" target="_blank" rel="noopener">
+              Pesan Langsung via WhatsApp
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: SERVIS & JASA BANTUAN (HOURLY / TASK WORKER)      -->
+    <!-- ======================================================== -->
+    <section class="tab-pane" id="tab-service">
+      <div class="surface-box">
+        <div class="surface-header">
+          <div>
+            <h2 class="surface-title">Servis & Jasa Bantuan Tenaga</h2>
+            <div class="surface-caption">Bantuan tenaga harian, bersih-bersih, angkat barang, pendampingan, atau urusan lokal lainnya.</div>
+          </div>
+        </div>
+
+        <form id="formService">
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="serviceCustomerName">Nama Pemesan</label>
+              <input type="text" id="serviceCustomerName" class="field-input" value="Rian Pratama" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="serviceCustomerPhone">Nomor WhatsApp</label>
+              <input type="tel" id="serviceCustomerPhone" class="field-input" value="0812-3456-7890" required>
+            </div>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="serviceCategory">Kategori Bantuan</label>
+              <select id="serviceCategory" class="field-select" required>
+                <option value="Bersih-bersih Rumah / Gudang">Bersih-bersih Rumah / Gudang</option>
+                <option value="Angkat Barang / Pindahan">Angkat Barang / Pindahan Ringan</option>
+                <option value="Temenin Aktivitas">Temenin Aktivitas (Aman & Wajar)</option>
+                <option value="Antre Tiket / Pengurusan Dokumen">Antre Tiket / Urus Dokumen</option>
+                <option value="Bantuan Harian Lainnya">Bantuan Harian Lainnya</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="serviceLocation">Lokasi Pengerjaan Tugas</label>
+              <input type="text" id="serviceLocation" class="field-input" value="Perumahan Taman Pinang Indah Blok B-4, Sidoarjo" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="serviceDesc">Rincian Instruksi / Tugas yang Dikerjakan</label>
+            <textarea id="serviceDesc" class="field-textarea" placeholder="Jelaskan kebutuhan pekerjaan secara spesifik" required>Bantu sapu, pel, dan rapikan kardus di ruang gudang belakang rumah lantai 1.</textarea>
+          </div>
+
+          <!-- PETA LEAFLET & OPENSTREETMAP LOKASI TUGAS (SERVIS & BANTUAN) -->
+          <div class="map-card-wrapper">
+            <div class="map-header-row">
+              <div class="map-header-title">
+                <span>Peta Lokasi Tugas (Leaflet & OpenStreetMap)</span>
+                <span class="route-badge-live" id="serviceRouteStatus">Titik Lokasi Terpilih</span>
+              </div>
+              <div class="map-hint-text">Geser Pin ke alamat rumah/lokasi kerja Anda</div>
+            </div>
+
+            <!-- KANVAS PETA -->
+            <div class="map-canvas-container" id="serviceMapCanvas"></div>
+
+            <!-- PRESET LOKASI CEPAT SIDOARJO -->
+            <div class="preset-route-row">
+              <span class="preset-caption">Pilihan Lokasi Sidoarjo:</span>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('taman_pinang')">Taman Pinang</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('puri_indah')">Puri Indah</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('alun_alun')">Alun-Alun</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('buduran')">Buduran</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('waru')">Waru</button>
+              <button type="button" class="preset-btn" onclick="applyServicePreset('candi')">Candi</button>
+            </div>
+          </div>
+
+          <!-- Durasi Jam Selector -->
+          <div class="slider-box">
+            <div class="slider-header-row">
+              <span class="field-label">Durasi Waktu Kerja</span>
+              <span id="serviceHoursText" class="slider-value-text">2 Jam</span>
+            </div>
+            <input type="range" id="serviceHoursSlider" class="range-slider" min="1" max="8" step="1" value="2">
+            <div class="preset-chips">
+              <button type="button" class="preset-btn" onclick="setServiceHours(1)">1 Jam</button>
+              <button type="button" class="preset-btn" onclick="setServiceHours(2)">2 Jam</button>
+              <button type="button" class="preset-btn" onclick="setServiceHours(3)">3 Jam</button>
+              <button type="button" class="preset-btn" onclick="setServiceHours(4)">4 Jam</button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="serviceNotes">Catatan Tambahan (Opsional)</label>
+            <input type="text" id="serviceNotes" class="field-input" placeholder="Contoh: Alat kebersihan sudah disediakan di lokasi">
+          </div>
+
+          <!-- Kalkulasi Biaya -->
+          <div class="price-breakdown-card">
+            <div class="price-row">
+              <span>Tarif Tenaga Kerja per Jam:</span>
+              <span id="serviceRateText" class="price-val">Rp 17.500 / Jam</span>
+            </div>
+            <div class="price-row">
+              <span>Durasi Pengerjaan:</span>
+              <span id="serviceHoursCalcText" class="price-val">2 Jam</span>
+            </div>
+            <div class="price-row total-row">
+              <span>Total Biaya Jasa:</span>
+              <span id="serviceTotalText" class="price-val highlight">Rp 35.000</span>
+            </div>
+          </div>
+
+          <div class="action-grid">
+            <button type="submit" class="btn-primary" id="btnSubmitService">
+              Kirim Pesanan ke Mitra
+            </button>
+            <a href="#" class="btn-secondary" id="btnWaService" target="_blank" rel="noopener">
+              Pesan Langsung via WhatsApp
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: ANTAR / KIRIM P2P (COURIER & PICKUP)              -->
+    <!-- ======================================================== -->
+    <section class="tab-pane" id="tab-delivery">
+      <div class="surface-box">
+        <div class="surface-header">
+          <div>
+            <h2 class="surface-title">Antar / Kirim Cepat (Point-to-Point)</h2>
+            <div class="surface-caption">Pengantaran dokumen, barang pribadi, atau jemput antar warga tanpa perantara.</div>
+          </div>
+        </div>
+
+        <form id="formDelivery">
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="delSenderName">Nama Pengirim / Pemesan</label>
+              <input type="text" id="delSenderName" class="field-input" value="Bambang Sudiro" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="delSenderPhone">Nomor WhatsApp</label>
+              <input type="tel" id="delSenderPhone" class="field-input" value="0812-4455-6677" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="delPickup">Titik Penjemputan (Pin A)</label>
+            <input type="text" id="delPickup" class="field-input" value="Jl. Pahlawan No. 20, Sidoarjo Kota" required>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="delRecipientName">Nama Penerima</label>
+              <input type="text" id="delRecipientName" class="field-input" value="Indah Kusuma" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="delRecipientPhone">Nomor WhatsApp Penerima</label>
+              <input type="tel" id="delRecipientPhone" class="field-input" value="0857-9900-1122" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="delDropoff">Titik Pengantaran (Pin B)</label>
+            <input type="text" id="delDropoff" class="field-input" value="Perumahan Buduran Asri Blok C-2, Buduran" required>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-field">
+              <label class="field-label" for="delCategory">Kategori Pengantaran</label>
+              <select id="delCategory" class="field-select" required>
+                <option value="Dokumen / Surat Penting">Dokumen / Surat Penting</option>
+                <option value="Barang Pribadi / Paket">Barang Pribadi / Paket (Maks 15 kg)</option>
+                <option value="Makanan / Kue Segar">Makanan / Minuman Siap Saji</option>
+                <option value="Antar Jemput Orang">Antar Jemput Warga / Pelajar</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="delItemDesc">Rincian Barang / Instruksi</label>
+              <input type="text" id="delItemDesc" class="field-input" value="Sertifikat Dokumen & Akta Notaris dalam map plastik" required>
+            </div>
+          </div>
+
+          <!-- PETA LEAFLET & OPENSTREETMAP RUTE BERKENDARA NYATA (DELIVERY) -->
+          <div class="map-card-wrapper">
+            <div class="map-header-row">
+              <div class="map-header-title">
+                <span>Peta Rute Jalan Raya (Leaflet & OpenStreetMap)</span>
+                <span class="route-badge-live" id="delRouteStatus">Rute Berkendara Nyata</span>
+              </div>
+              <div class="map-hint-text">Geser Pin A (Jemput) atau Pin B (Antar) pada peta</div>
+            </div>
+
+            <!-- KANVAS PETA -->
+            <div class="map-canvas-container" id="delMapCanvas"></div>
+
+            <!-- STRIP INFORMASI RUTE HASIL KALKULASI BERKENDARA NYATA -->
+            <div class="route-stats-strip">
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Jarak Rute Jalan Raya:</span>
+                <span class="stat-meta-val" id="delDistanceText">4,5 km</span>
+              </div>
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Estimasi Waktu Tempuh:</span>
+                <span class="stat-meta-val" id="delDurationText">~11 Menit</span>
+              </div>
+              <div class="route-stat-item">
+                <span class="stat-meta-label">Navigasi:</span>
+                <span class="stat-meta-val" style="color: var(--brand-accent);">Jalan Raya Nyata</span>
+              </div>
+            </div>
+
+            <!-- PRESET RUTE CEPAT SIDOARJO -->
+            <div class="preset-route-row">
+              <span class="preset-caption">Rute Cepat Sidoarjo:</span>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('pahlawan_buduran')">Pahlawan &rarr; Buduran (4,5 km)</button>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('alun2_puri_indah')">Alun-Alun &rarr; Puri Indah (3,8 km)</button>
+              <button type="button" class="preset-btn" onclick="applyDelPreset('candi_kota')">Candi &rarr; Sidoarjo Kota (4,9 km)</button>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top: 10px;">
+            <label class="field-label" for="delNotes">Catatan Tambahan (Opsional)</label>
+            <input type="text" id="delNotes" class="field-input" placeholder="Contoh: Dokumen jangan dilipat dan lindungi dari hujan">
+          </div>
+
+          <!-- Kalkulasi Biaya -->
+          <div class="price-breakdown-card">
+            <div class="price-row">
+              <span>Tarif Ongkos Pengantaran Jalan Raya:</span>
+              <span id="delFeeText" class="price-val">Rp 11.250</span>
+            </div>
+            <div class="price-row" style="font-size: 0.72rem; color: var(--text-muted);">
+              <span>Perhitungan Tarif:</span>
+              <span id="delRuleText">Rute Jalan Nyata &times; Rp 2.500/km</span>
+            </div>
+            <div class="price-row total-row">
+              <span>Total Ongkir (COD / Tunai):</span>
+              <span id="delTotalText" class="price-val highlight">Rp 11.250</span>
+            </div>
+          </div>
+
+          <div class="action-grid">
+            <button type="submit" class="btn-primary" id="btnSubmitDelivery">
+              Kirim Pesanan ke Mitra
+            </button>
+            <a href="#" class="btn-secondary" id="btnWaDelivery" target="_blank" rel="noopener">
+              Pesan Langsung via WhatsApp
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: PESANAN SAYA & STATUS REAL-TIME                   -->
+    <!-- ======================================================== -->
+    <section class="tab-pane" id="tab-orders">
+      <div class="surface-box">
+        <div class="surface-header">
+          <div>
+            <h2 class="surface-title">Status & Riwayat Pesanan Saya</h2>
+            <div class="surface-caption">Pantau kemajuan mitra yang ditugaskan secara real-time.</div>
+          </div>
+          <button type="button" class="preset-btn" onclick="renderCustomerOrders()">Muat Ulang</button>
+        </div>
+
+        <div id="customerOrdersContainer">
+          <!-- Populated by customer.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="shared.js"></script>
+  <script src="vendor/leaflet.js"></script>
+  <script src="customer.js"></script>
+</body>
+
+</html>

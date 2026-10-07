@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTM Sidoarjo - Konsol Pengawas Admin & Dispatcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+  <!-- TOP APP BAR -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand-row">
+        <div class="brand-badge">AD</div>
+        <div>
+          <div class="admin-title">Konsol Pengawas Admin & Dispatcher</div>
+          <div class="admin-sub">Monitoring Jasa Bantuan Lokal &bull; MTM Sidoarjo Hyperlocal Network</div>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn-admin" onclick="renderAdminApp()"
+          style="padding: 6px 12px; font-size: 0.72rem; min-height: 34px;">
+          Segarkan Data
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- METRICS 4 STATS (3 PILAR MTM + TOTAL GMV) -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Nilai Transaksi (GMV)</div>
+        <div class="stat-val primary" id="totalGmvText">Rp 0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Minta Dibelikan</div>
+        <div class="stat-val" id="countShoppingOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Servis & Bantuan</div>
+        <div class="stat-val" id="countServiceOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Antar / Kurir P2P</div>
+        <div class="stat-val" id="countDeliveryOrders">0</div>
+      </div>
+    </section>
+
+    <!-- PRICING ENGINE CONFIGURATION (3 PILAR MTM) -->
+    <section class="section-box">
+      <div class="section-header-row">
+        <div>
+          <h2 class="section-heading">Dynamic Pricing Engine</h2>
+          <p style="font-size: 0.72rem; color: var(--text-muted);">
+            Konfigurasi tarif dasar kurir, jasa titip beli warung bebas, dan tarif per jam servis bantuan.
+          </p>
+        </div>
+      </div>
+
+      <form id="formPricingEngine">
+        <div class="pricing-form-grid">
+          <div>
+            <label class="input-label" for="cfgDeliveryBase">Tarif Dasar Kurir P2P (Min s.d. 3 km)</label>
+            <input type="number" id="cfgDeliveryBase" class="input-field" step="500" required>
+          </div>
+          <div>
+            <label class="input-label" for="cfgDeliveryPerKm">Tarif Kurir P2P (per KM)</label>
+            <input type="number" id="cfgDeliveryPerKm" class="input-field" step="500" required>
+          </div>
+          <div>
+            <label class="input-label" for="cfgShopService">Biaya Jasa Minta Dibelikan (Flat)</label>
+            <input type="number" id="cfgShopService" class="input-field" step="500" required>
+          </div>
+          <div>
+            <label class="input-label" for="cfgShopPerKm">Ongkir Antar Belanjaan (per KM)</label>
+            <input type="number" id="cfgShopPerKm" class="input-field" step="500" required>
+          </div>
+          <div>
+            <label class="input-label" for="cfgServiceHourly">Tarif Servis & Bantuan (per Jam)</label>
+            <input type="number" id="cfgServiceHourly" class="input-field" step="500" required>
+          </div>
+          <div>
+            <label class="input-label" for="cfgPlatformFeePercent">Bagi Hasil Platform (%)</label>
+            <input type="number" id="cfgPlatformFeePercent" class="input-field" min="5" max="30" step="1" required>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+          <button type="submit" class="btn-admin" id="btnSavePricing">
+            Simpan Konfigurasi Tarif
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ARMADA MITRA SIAGA MONITORING -->
+    <section class="section-box">
+      <div class="section-header-row">
+        <h2 class="section-heading">Armada Mitra Siaga di Wilayah Sidoarjo</h2>
+        <span style="font-size: 0.72rem; color: var(--text-muted);" id="activeFleetCounter">4 Mitra</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <!-- <th>ID Mitra</th> -->
+              <th>Nama & Kendaraan</th>
+              <th>Wilayah Pos</th>
+              <th>Status Mitra</th>
+              <th>Pendapatan Bersih</th>
+              <th>Kas COD Ditangan</th>
+              <th>Aksi Status Akun</th>
+            </tr>
+          </thead>
+          <tbody id="driverFleetTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- REAL-TIME LOG SELURUH TRANSAKSI -->
+    <section class="section-box">
+      <div class="section-header-row">
+        <h2 class="section-heading">Buku Besar Transaksi Real-time</h2>
+        <span style="font-size: 0.72rem; color: var(--text-muted);" id="totalTransactionsBadge">0 Transaksi</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID Pesanan</th>
+              <th>Layanan</th>
+              <th>Rincian Tugas / Rute</th>
+              <th>Mitra Bertugas</th>
+              <th>Nilai Transaksi</th>
+              <th>Status Operasional</th>
+            </tr>
+          </thead>
+          <tbody id="allOrdersTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="shared.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LokalKirim v2.0 - Portal Mitra Usaha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="merchant.css">
+</head>
+
+<body>
+
+  <!-- TOP APP BAR -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand-row">
+        <div class="brand-badge">TK</div>
+        <div>
+          <div class="merchant-info-title" id="merchantTitle">Toko Berkah Kelontong</div>
+          <div class="merchant-info-sub" id="merchantAddressText">Jl. Mawar No. 12, Sidoarjo Kota</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <select id="merchantSwitcher" style="font-size: 0.72rem; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); font-family: var(--font-main);">
+          <option value="toko-berkah">Toko Berkah Kelontong</option>
+          <option value="geprek-juara">Ayam Geprek Sambal Bawang</option>
+          <option value="apotek-sehat">Apotek Barokah Sehat</option>
+        </select>
+        <button type="button" class="store-toggle-btn" id="btnStoreToggle">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #15803D;"></span>
+          <span id="storeStatusLabel">Toko Buka</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- METRICS OVERVIEW -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Pesanan Perlu Diproses</div>
+        <div class="metric-val primary" id="pendingOrdersCount">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Pesanan Selesai Hari Ini</div>
+        <div class="metric-val" id="completedOrdersCount">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total Omset Toko</div>
+        <div class="metric-val" id="merchantRevenueText">Rp 0</div>
+      </div>
+    </section>
+
+    <!-- INCOMING STORE ORDERS -->
+    <section>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h2 style="font-size: 0.88rem; font-weight: 800;">Antrean Pesanan Masuk</h2>
+        <button type="button" onclick="renderMerchantApp()" style="font-size: 0.72rem; background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer;">Segarkan</button>
+      </div>
+
+      <div id="merchantOrdersQueue">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- PRODUCT CATALOG LIST -->
+    <section style="margin-top: 18px;">
+      <h2 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 8px;">Katalog Produk Toko</h2>
+      <div id="merchantProductsList" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <script src="shared.js"></script>
+  <script src="merchant.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTM Sidoarjo - Aplikasi Mitra Kurir & Pelaksana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="driver.css">
+</head>
+
+<body>
+
+  <!-- TOP APP BAR -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand-row">
+        <div class="brand-badge">MTM</div>
+        <div>
+          <div class="driver-info-title" id="driverNameText">Budi Santoso</div>
+          <div class="driver-info-sub" id="driverPlateText">Honda Beat &bull; W 4821 KLR &bull; Sidoarjo Kota</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <select id="driverSwitcher" class="driver-switcher" title="Ganti Profil Mitra">
+          <option value="drv-01">Budi (Kota)</option>
+          <option value="drv-02">Agus (Waru)</option>
+          <option value="drv-03">Dedi (Buduran)</option>
+          <option value="drv-04">Rudi (Candi)</option>
+        </select>
+
+        <!-- SWITCH TOGGLE ON / OFF -->
+        <div class="duty-switch-card is-online" id="dutySwitchCard">
+          <span class="duty-switch-text" id="onlineLabel">Siap Kerja</span>
+          <label class="switch-toggle" for="toggleDriverStatus" title="Ubah status kerja On / Off">
+            <input type="checkbox" id="toggleDriverStatus" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- DRIVER STATUS NOTIFICATION BANNER -->
+    <div id="driverStatusBanner"></div>
+
+    <!-- WALLET & CASH HELD SUMMARY -->
+    <section class="wallet-grid">
+      <div class="wallet-card">
+        <div class="wallet-label">Pendapatan Bersih</div>
+        <div class="wallet-val green" id="driverEarningsText">Rp 0</div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-label">Kas Tunai COD Ditangan</div>
+        <div class="wallet-val amber" id="driverCashHeldText">Rp 0</div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-label">Setoran Platform</div>
+        <div class="wallet-val" id="platformFeeOwedText">Rp 0</div>
+      </div>
+    </section>
+
+    <!-- INCOMING ORDER OFFERS -->
+    <section>
+      <div class="section-title-row">
+        <h2 class="section-heading">Tawaran Tugas Masuk</h2>
+        <span id="offersCountBadge" class="count-pill">0 Tawaran</span>
+      </div>
+
+      <div id="offersQueueContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- PETA NAVIGASI & RUTE TUGAS PEMESAN (LEAFLET + OSRM) -->
+    <section style="margin-top: 14px;">
+      <div class="section-title-row">
+        <h2 class="section-heading">Peta Navigasi & Rute Tugas</h2>
+        <span id="driverMapStatusBadge" class="count-pill">Siaga</span>
+      </div>
+
+      <div class="driver-map-box">
+        <div class="driver-map-header">
+          <span id="driverMapRouteTitle">Peta Rute Navigasi Pemesan</span>
+          <span id="driverMapRoadBadge" style="color: var(--primary); font-size: 0.72rem; font-weight: 700;">Rute Jalan Raya Nyata</span>
+        </div>
+        <div class="driver-map-canvas" id="driverNavMapCanvas"></div>
+        <div class="driver-route-strip" id="driverRouteStrip">
+          <span>Jarak: <b id="driverRouteDist">-</b></span>
+          <span>Estimasi: <b id="driverRouteDur">-</b></span>
+          <span>Status: <b id="driverRouteSummary">-</b></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVE ONGOING TASK -->
+    <section style="margin-top: 14px;">
+      <h2 class="section-heading" style="margin-bottom: 8px;">Tugas Sedang Berjalan</h2>
+      <div id="activeTaskContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- COMPLETED HISTORY TODAY -->
+    <section style="margin-top: 18px;">
+      <div class="section-title-row">
+        <h2 class="section-heading">Riwayat Tugas Selesai</h2>
+        <button type="button" onclick="renderDriverApp()" class="btn-refresh">Segarkan</button>
+      </div>
+      <div id="completedHistoryContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <script src="shared.js"></script>
+  <script src="vendor/leaflet.js"></script>
+  <script src="driver.js"></script>
+</body>
+
+</html>
