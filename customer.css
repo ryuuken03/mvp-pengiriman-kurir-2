@@ -730,3 +730,827 @@ body {
   color: var(--text-muted);
   font-size: 0.8rem;
 }
+
+/* ==========================================================================
+   10. LOCATION GROUP CARDS & MULTI-STOP SECTIONS
+   ========================================================================== */
+.location-group-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 12px;
+  transition: border-color 0.15s ease;
+}
+
+.location-group-card:focus-within {
+  border-color: #CBD5E1;
+}
+
+.location-group-card.is-extra-stop {
+  background: #F8FAFC;
+  border: 1px dashed #CBD5E1;
+}
+
+.location-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.location-badge-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--brand-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.location-badge-label.secondary {
+  color: #7C3AED;
+}
+
+.btn-remove-stop {
+  background: transparent;
+  border: none;
+  color: var(--color-danger);
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   10. LOCATION SELECTION BOX & LONG TEXT PREVIEW CARDS
+   ========================================================================== */
+.location-selection-box {
+  margin-bottom: 10px;
+}
+
+.btn-pick-location-trigger {
+  width: 100%;
+  margin-top: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--brand-accent);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-pick-location-trigger:hover {
+  background: #EFF6FF;
+  border-color: var(--brand-accent);
+}
+
+.btn-pick-location-trigger:active {
+  background: #DBEAFE;
+}
+
+.location-preview-card {
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  transition: all 0.15s ease;
+}
+
+.location-preview-card:hover {
+  border-color: #94A3B8;
+  background: #F1F5F9;
+}
+
+.preview-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.preview-badge-status {
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: #1E40AF;
+  background: #DBEAFE;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.preview-coords-text {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.preview-address-long {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* ==========================================================================
+   10B. COMPACT ROUTE ACCORDION (OPSI A MOBILE FRIENDLY)
+   ========================================================================== */
+.route-summary-accordion-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.route-summary-bar {
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #F8FAFC;
+}
+
+.route-summary-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.route-badge-pill {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #166534;
+  background: #DCFCE7;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+.route-metrics-line {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 1px;
+}
+
+.route-metric-km {
+  font-family: var(--font-mono);
+  color: var(--brand-accent);
+}
+
+.route-metric-dur {
+  color: var(--text-main);
+}
+
+.route-road-status {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.btn-accordion-toggle {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 42px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-accordion-toggle:hover {
+  background: #EFF6FF;
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+}
+
+.btn-accordion-toggle.is-active {
+  background: #1E293B;
+  border-color: #1E293B;
+  color: #FFFFFF;
+}
+
+.route-accordion-drawer {
+  border-top: 1px solid var(--border-color);
+  background: #FFFFFF;
+}
+
+.compact-map-container {
+  width: 100%;
+  height: 220px;
+  background: #E2E8F0;
+}
+
+.compact-map-footer {
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F8FAFC;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.btn-text-close-map {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-text-close-map:hover {
+  color: var(--text-main);
+  text-decoration: underline;
+}
+
+.btn-add-stop-trigger {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed #CBD5E1;
+  color: var(--brand-accent);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-bottom: 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-add-stop-trigger:hover {
+  background: #F1F5F9;
+  border-color: var(--brand-accent);
+}
+
+/* ==========================================================================
+   11. LOCATION PICKER MODAL (GOOGLE MAPS STYLE)
+   ========================================================================== */
+.location-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.18s ease-out;
+}
+
+@media (min-width: 640px) {
+  .location-modal-backdrop {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.location-modal-sheet {
+  background: var(--bg-surface);
+  width: 100%;
+  max-width: 660px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  height: 92vh;
+  max-height: 92vh;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .location-modal-sheet {
+    border-radius: var(--radius-lg);
+    height: 86vh;
+    max-height: 720px;
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.location-modal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FFFFFF;
+}
+
+.location-modal-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.location-modal-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.btn-modal-close {
+  background: #F1F5F9;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-modal-close:hover {
+  background: #E2E8F0;
+}
+
+/* FLOATING SEARCH BAR */
+.picker-search-bar-wrap {
+  position: relative;
+  padding: 8px 16px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 10;
+}
+
+.picker-search-input-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: #F8FAFC;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease;
+}
+
+.picker-search-input-box:focus-within {
+  border-color: var(--brand-accent);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.picker-search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  outline: none;
+}
+
+.picker-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.btn-clear-search {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.btn-clear-search:hover {
+  color: var(--text-main);
+}
+
+/* DROPDOWN SUGESTI PENCARIAN */
+.picker-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 16px;
+  right: 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid #F1F5F9;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background: #EFF6FF;
+}
+
+.search-result-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.search-result-cat {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.search-empty-state {
+  padding: 14px;
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* HORIZONTAL CHIP PRESETS */
+.location-preset-chips {
+  padding: 8px 16px;
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.preset-chip-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-right: 2px;
+}
+
+.modal-chip-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+}
+
+.modal-chip-btn:hover {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+  background: #EFF6FF;
+}
+
+/* MAP CANVAS WRAPPER & CENTER PIN OVERLAY */
+.picker-map-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 260px;
+  background: #E2E8F0;
+  overflow: hidden;
+}
+
+.picker-map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* GOOGLE MAPS STYLE FIXED CENTER PIN */
+.picker-center-pin-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.center-pin-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.18s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.picker-center-pin-overlay.is-dragging .center-pin-marker {
+  transform: translateY(-12px);
+}
+
+.center-pin-head {
+  width: 26px;
+  height: 26px;
+  background: #DC2626;
+  border: 3px solid #FFFFFF;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.center-pin-stem {
+  width: 4px;
+  height: 6px;
+  background: #B91C1C;
+  margin-top: -3px;
+}
+
+.center-pin-shadow {
+  width: 12px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 50%;
+  margin-top: 2px;
+  transition: all 0.18s ease;
+}
+
+.picker-center-pin-overlay.is-dragging .center-pin-shadow {
+  transform: scale(0.65);
+  opacity: 0.45;
+}
+
+/* FAB TOMBOL LOKASI SAYA (GPS) */
+.btn-picker-gps-fab {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 46px;
+  height: 46px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-picker-gps-fab:hover {
+  background: #F8FAFC;
+  transform: scale(1.05);
+}
+
+.btn-picker-gps-fab:active {
+  transform: scale(0.95);
+}
+
+.gps-fab-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--brand-accent);
+  letter-spacing: 0.5px;
+}
+
+/* BOTTOM SHEET INFO BAR & CONFIRMATION */
+.picker-info-bar {
+  padding: 12px 16px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+}
+
+.picker-info-label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.picker-info-value {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 2px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.picker-info-coord {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--brand-accent);
+  margin-top: 2px;
+}
+
+.location-modal-footer {
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-confirm-location {
+  width: 100%;
+  min-height: 46px;
+  font-size: 0.85rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ==========================================================================
+   14. UNIFIED RECEIPT & TRANSACTION DETAIL MODAL STYLES
+   ========================================================================== */
+.btn-view-detail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  min-height: 40px;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-view-detail:hover {
+  background: #E2E8F0;
+  border-color: #94A3B8;
+}
+
+.unified-receipt-card {
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin: 10px 0;
+}
+
+.receipt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.receipt-card-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #1E293B;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.receipt-order-id {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--brand-accent);
+}
+
+.receipt-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748B;
+  margin-top: 6px;
+  margin-bottom: 3px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.receipt-row.receipt-indent {
+  padding-left: 6px;
+}
+
+.receipt-item-sub {
+  font-size: 0.7rem;
+  color: #475569;
+  margin-bottom: 2px;
+  padding-left: 6px;
+}
+
+.receipt-val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.receipt-divider {
+  height: 1px;
+  border-top: 1px dashed #CBD5E1;
+  margin: 6px 0;
+}
+
+.receipt-total-box {
+  background: #FFFFFF;
+  border: 1px solid #94A3B8;
+  border-radius: var(--radius-xs);
+  padding: 8px 10px;
+  margin-top: 8px;
+}
+
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #0F172A;
+}
+
+.receipt-total-val {
+  font-family: var(--font-mono);
+  font-size: 0.96rem;
+  color: var(--brand-accent);
+}
+
+.receipt-payment-method {
+  font-size: 0.68rem;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.modal-section-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 0.74rem;
+}
+
+.modal-section-title {
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 6px;
+  font-size: 0.74rem;
+}

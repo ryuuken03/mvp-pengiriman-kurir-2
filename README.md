@@ -9,15 +9,17 @@ Versi 2.0 (`MVP2`) mengadopsi model operasional riil **MTM Sidoarjo (Mas Tulong 
 
 Arsitektur disederhanakan menjadi **3 Aktor Utama** (*Customer $\rightarrow$ Driver/Mitra $\rightarrow$ Admin Dispatcher*), terintegrasi secara *real-time* menggunakan sinkronisasi `BroadcastChannel` dan `localStorage`.
 
+Dokumen spesifikasi kebutuhan produk resmi dan analisis iterasi berikutnya tersedia pada **[PRD_MVP2.md](file:///c:/Project/solusi.toriq/Zulfiar%20Ryan/Project%20Kurir%20Mirip%20Gojek/PRD_MVP2.md)**.
+
 ---
 
 ## 3 Pilar Layanan Utama & Skema Tarif
 
 | Pilar Layanan | Deskripsi Operasional | Rumus Biaya Transparan |
 | :--- | :--- | :--- |
-| **Minta Dibelikan** | Pelanggan memesan makanan/kebutuhan di warung tenda atau toko bebas tanpa syarat pendaftaran merchant. Mitra membayarkan tunai terlebih dahulu di kasir. | Biaya Jasa Beli Flat (`Rp 5.000`) + Ongkir Antar Rute Jalan (`Rp 2.500/km`) + Uang Talangan Belanja Riil (diganti tunai saat COD). |
-| **Servis & Bantuan** | Penyewaan jasa tenaga kerja harian untuk kebutuhan praktis di rumah atau tempat usaha. | Durasi Kerja $\times$ Tarif per Jam (`Rp 17.500/jam`). |
-| **Antar / Kirim P2P** | Pengiriman barang pribadi, paket dokumen penting kantor, atau jemput antar langsung titik ke titik. | Tarif Dasar Minimum (`Rp 8.000` s.d. 3 km) atau Jarak Rute Jalan $\times$ `Rp 2.500/km`. |
+| **Minta Dibelikan** | Pelanggan memesan makanan/kebutuhan di warung tenda atau toko bebas tanpa syarat pendaftaran merchant. Mendukung **Multi-Toko** (hingga 2 toko dalam 1 trip). Mitra membayarkan tunai terlebih dahulu di kasir. | (Biaya Jasa Beli Flat `Rp 5.000` $\times$ Jumlah Toko) + Ongkir Antar Rute Jalan OSRM (`Rp 2.500/km`) + Uang Talangan Belanja Riil (diganti tunai saat COD). *(Biaya Jasa Beli Rp 5.000 adalah kompensasi waktu antre 15–30 menit, parkir, dan pemilihan barang di kasir warung agar mitra tidak menolak order belanja jarak dekat).* |
+| **Servis & Bantuan** | Layanan jasa bantuan tenaga dan tukang servis teknik (AC, Pompa Air, Listrik, Bangunan, Las, Motor). Menggunakan skema **Opsi 1**: Biaya Kedatangan & Cek Lokasi Dasar (`Rp 15.000`), serta penawaran daftar rincian item jasa & suku cadang (*itemized breakdown + auto-sum*) yang diajukan mitra/tukang di aplikasi setelah pengecekan fisik untuk disetujui oleh pelanggan. | Biaya Pengecekan Lokasi (`Rp 15.000`) + Biaya Jasa & Suku Cadang Riil yang Disetujui Pelanggan di Tempat (COD). *(Tidak ada biaya jasa beli, melainkan kompensasi kehadiran fisik teknisi dan jasa perbaikan).* |
+| **Antar / Kirim P2P** | Pengiriman barang pribadi, paket dokumen kantor, atau jemput antar langsung titik ke titik. Mendukung **Multi-Drop / Titik Singgah** opsional. | $\max(\text{Tarif Dasar Min Rp 8.000}, \text{Jarak OSRM} \times \text{Rp 2.500/km}) + (\text{Biaya Titik Singgah Rp 3.000/stop})$. *(Tidak ada biaya jasa beli karena kurir murni mengambil paket yang sudah siap dan langsung mengantarkannya tanpa antre di kasir).* |
 
 ---
 
@@ -89,42 +91,56 @@ Panggung simulator menampilkan 3 aplikasi secara berdampingan dalam satu layar:
 
 ### B. Alur Penggunaan Aplikasi Pelanggan (`customer.html`)
 1. **Pilih Pilar Layanan:** Klik salah satu dari 3 kartu layanan di bagian atas (*Minta Dibelikan*, *Servis & Bantuan*, atau *Antar / Kirim*).
-2. **Peta Interaktif & Rute Jalan Raya (Leaflet + OSRM):**
-   - Geser pin jemput (A) dan pin tujuan (B) pada peta secara bebas.
-   - Atau klik salah satu tombol **Preset Rute Cepat Sidoarjo** (contoh: *Taman Pinang $\rightarrow$ Jl. Pahlawan*, *Pasar Larangan $\rightarrow$ Alun-Alun*, *Ruko Waru*, dll.).
-   - Sistem secara otomatis menghitung rute berkendara nyata jalan raya menggunakan engine OSRM (bukan garis lurus fiktif) beserta jarak km dan estimasi menit tempuh.
-3. **Penyetelan Khusus Layanan:**
-   - **Minta Dibelikan:** Masukkan perkiraan talangan belanja dan catatan menu/barang belanjaan.
-   - **Servis & Bantuan:** Geser slider durasi jam kerja (1 s.d. 8 jam).
-4. **Kalkulasi Biaya Transparan:** Rincian biaya talangan, biaya jasa, ongkir jalan raya, dan total bayar COD di tempat tertampil otomatis.
-5. **Kirim Pesanan:**
-   - Klik **Kirim Pesanan ke Mitra** untuk menyiarkan order langsung ke sistem kurir terdekat.
-   - Atau klik **Pesan Langsung via WhatsApp** untuk membuka tautan chat resmi dengan draf rincian pesanan yang sudah terformat rapi.
-6. **Lacak Pesanan:** Buka tab **Pesanan Saya** untuk memantau status pengerjaan oleh kurir secara *real-time*.
+2. **Modal Pemilih Lokasi Bergaya Google Maps (Location Picker Modal):**
+   - Setiap bagian titik alamat dilengkapi tombol **"Pilih Titik di Peta"**.
+   - Menekan tombol ini memunculkan dialog modal interaktif bergaya **Google Maps**:
+     - **Floating Search Bar & Autocomplete:** Kolom pencarian melayang di atas peta dengan autocompletion offline instan 17+ landmark Sidoarjo dan fallback pencarian alamat online via OSM Geocoding.
+     - **Tombol GPS Floating:** Tombol cepat di sudut kanan bawah untuk mendeteksi posisi koordinat perangkat pengguna secara langsung melalui sensor GPS peramban.
+     - **Fixed Center Pin Engine:** Pin peta diletakkan tetap di tengah kanvas. Pengguna cukup menggeser (*pan*) peta dengan jempol, dan sistem otomatis melakukan *reverse-geocoding* alamat patokan terdekat.
+     - **Bottom Confirmation Card:** Kartu konfirmasi di bagian bawah menampilkan nama lokasi patokan terdeteksi, koordinat garis lintang/bujur, serta tombol **"Gunakan Titik Lokasi Ini"**.
+3. **Kartu Pratinjau Alamat Teks Panjang (Location Preview Cards):**
+   - Menghilangkan kolom teks kaku (*input disabled*) yang kerap terpotong di layar ponsel cerdas.
+   - Menggantinya dengan kartu pratinjau teks panjang (*multiline wrap*) yang menampilkan badge status "Titik Terpilih", koordinat presisi, serta alamat lengkap yang mudah dibaca tepat di atas kolom patokan opsional.
+4. **Kartu Ringkasan Rute Kompak & Accordion Drawer (Opsi A Mobile-Friendly):**
+   - Menggantikan kanvas peta besar yang statis di formulir utama dengan **Kartu Ringkasan Rute Kompak (Tinggi 48px)**.
+   - Menampilkan metrik jarak jalan raya riil OSRM (`km`), estimasi waktu tempuh (`menit`), dan tombol interaktif **"Lihat Peta Rute"**.
+   - Mencegah jebakan sentuhan jempol (*map gesture trap*) pada layar ponsel. Saat tombol ditekan, drawer peta membuka rute jalan raya dengan transisi mulus dan auto-fit bounds Leaflet.
+5. **Dukungan Multi-Titik (Multi-Store & Multi-Drop):**
+   - **Minta Dibelikan (Multi-Toko):** Pelanggan dapat menekan tombol `+ Tambah Toko Singgah Tambahan` untuk menitip belanja di toko/warung kedua dalam satu trip. Biaya jasa beli dihitung transparan (Rp 5.000 $\times$ 2 = Rp 10.000) dan rute OSRM menghubungkan Toko 1 $\rightarrow$ Toko 2 $\rightarrow$ Alamat Antar.
+   - **Antar / Kirim P2P (Multi-Drop):** Pelanggan dapat menekan tombol `+ Tambah Titik Antar Singgah` untuk mengirim paket ke 2 alamat penerima sekaligus dengan tambahan biaya singgah Rp 3.000.
+6. **Kalkulasi Biaya Transparan & Kirim Pesanan:**
+   - Rincian biaya talangan, biaya jasa beli/toko, biaya singgah, ongkir jalan raya, dan total bayar COD di tempat tertampil otomatis.
+   - Klik **Kirim Pesanan ke Mitra** untuk siaran order langsung ke sistem kurir terdekat atau **Pesan Langsung via WhatsApp** untuk format chat resmi.
+7. **Lacak Pesanan & Modal Detail Transaksi Terpadu:**
+   - Buka tab **Pesanan Saya** untuk memantau status pesanan dalam format kartu ringkas (*glanceable*).
+   - Klik tombol **"Lihat Detail Transaksi"** untuk membuka lembar modal interaktif berisi rincian rute lengkap dan **Struk Pembayaran Terpadu (Unified Billing Receipt)** yang menyatukan seluruh komponen tagihan (talangan, suku cadang, ongkir, jasa) tanpa terpisah-pisah.
+   - Jika status pesanan *Menunggu Persetujuan Biaya Servis*, tombol aksi persetujuan (*Setujui Biaya & Kerjakan* / *Tolak*) tersedia langsung di dalam modal tepat di bawah struk terpadu.
 
 ---
 
 ### C. Alur Penggunaan Aplikasi Mitra Kurir (`driver.html`)
 1. **Switch Toggle Status Kerja (On / Off):**
    - Geser saklar switch di pojok kanan atas ke posisi **Siap Kerja (On)** untuk menerima pesanan masuk.
-   - Geser ke posisi **Sedang Istirahat (Off)** saat ingin beristirahat (antrean tugas otomatis disembunyikan).
-   - Jika akun disuspensi oleh admin, saklar otomatis terkunci (*disabled*) berwarna merah dengan label **Ditangguhkan (Suspend)**.
-2. **Peta Navigasi & Rute Tugas Pemesan:**
-   - Menampilkan peta Leaflet OpenStreetMap langsung di layar kurir.
-   - Saat bertugas, peta menggambarkan rute berkendara nyata dari titik toko/jemput (Marker 1/A) ke alamat pemesan (Marker 2/B) beserta jarak km dan durasi tempuh.
-   - Saat stanby/siaga, peta menampilkan pangkalan kurir di wilayah tugasnya (Alun-Alun Sidoarjo, Waru, Buduran, atau Candi).
+   - Geser ke posisi **Sedang Istirahat (Off)** saat ingin beristirahat.
+   - Jika akun disuspensi oleh admin, saklar otomatis terkunci (*disabled*) berwarna merah.
+2. **Peta Navigasi & Rute Tugas Multi-Stop:**
+   - Menampilkan peta navigasi tugas OpenStreetMap dengan rute berkendara multi-waypoint (Marker 1/A $\rightarrow$ Marker Singgah $\rightarrow$ Marker 2/B).
+   - Menghitung jarak jalan raya nyata secara akumulatif menggunakan OSRM driving engine.
 3. **Tawaran Tugas Masuk:**
-   - Periksa kartu tawaran tugas yang masuk lengkap dengan pendapatan bersih yang akan diterima.
-   - Klik **Lihat Rute di Peta** untuk mempratinjau rute jalan pemesan sebelum memutuskan mengambil tugas.
-   - Klik **Terima Tugas** untuk mengonfirmasi order atau **Lewati** untuk mengabaikan.
+   - Kartu tawaran merinci titik-titik belanja (Toko 1 & Toko 2) atau titik antar singgah, nominal talangan tunai yang wajib disiapkan, dan pendapatan bersih kurir.
+   - Tombol **Lihat Rute di Peta** untuk mempratinjau rute sebelum konfirmasi tugas.
 4. **Alur Kerja Bertahap (Workflow Operasional):**
-   - **Minta Dibelikan:** Tombol alur 1: *"Tiba di Lokasi & Beli Barang (Bawa Talangan Tunai)"* $\rightarrow$ Tombol alur 2: *"Pesanan Tiba & Terima Kas COD Total"*.
-   - **Servis & Bantuan:** Tombol alur 1: *"Tiba di Lokasi & Mulai Bekerja"* $\rightarrow$ Tombol alur 2: *"Tugas Selesai & Terima Pembayaran"*.
-   - **Antar P2P:** Tombol alur 1: *"Paket Diambil & Antar ke Penerima"* $\rightarrow$ Tombol alur 2: *"Paket Tiba di Tujuan & Selesaikan Pengantaran"*.
+   - Menyesuaikan pilar layanan secara cerdas:
+     - **Pilar 1 (Minta Dibelikan):** *"1. Tiba di Lokasi & Selesaikan Belanja"* $\rightarrow$ *"2. Pesanan Tiba & Terima COD Total"*.
+     - **Pilar 2 (Servis & Bantuan - Skema Opsi 1 Itemized):** *"1. Tiba di Lokasi & Mulai Pengecekan"* $\rightarrow$ Form Input Rincian Itemized Pekerjaan & Suku Cadang (+ Tambah Item & Auto-Sum, Status: *Menunggu Persetujuan Pelanggan*) $\rightarrow$ Pengerjaan Disetujui Konsumen (atau Pembatalan Berbayar Cek Rp 15.000 jika Ditolak) $\rightarrow$ *"Selesaikan Servis & Terima Pembayaran"*.
+     - **Pilar 3 (Antar / Kirim P2P):** *"1. Paket Diambil & Antar"* $\rightarrow$ *"2. Paket Tiba & Selesaikan Pengantaran"*.
 5. **Ringkasan Dompet Kas:**
    - Memantau akumulasi **Pendapatan Bersih** mitra.
-   - Memantau total **Kas Tunai COD Ditangan** yang wajib disetorkan/dikelola.
+   - Memantau total **Kas Tunai COD Ditangan** yang wajib dipertanggungjawabkan.
    - Memantau akumulasi **Setoran Biaya Platform**.
+6. **Modal Detail Transaksi & Struk Bagi Hasil Mitra:**
+   - Pada kartu tugas aktif dan setiap kartu riwayat selesai, tersedia tombol **"Lihat Detail Transaksi & Rincian Struk"**.
+   - Membuka modal berisi rincian rute, pemesan, struk pesanan terpadu, total uang kas COD yang diterima, potongan biaya aplikasi platform (15%), dan hak pendapatan bersih mitra secara transparan.
 
 ---
 
@@ -133,7 +149,7 @@ Panggung simulator menampilkan 3 aplikasi secara berdampingan dalam satu layar:
 2. **Dynamic Pricing Engine:**
    - Konfigurasi tarif dikelompokkan ke dalam kartu per pilar:
      - **Pilar 1 (Minta Dibelikan):** Biaya Jasa Beli Flat (`Rp`) & Ongkir Belanja (`Rp / km`).
-     - **Pilar 2 (Servis & Bantuan):** Tarif Tenaga Kerja (`Rp / jam`).
+     - **Pilar 2 (Servis & Bantuan):** Biaya Cek & Kedatangan Dasar (`Rp 15.000`) & Tarif Tenaga Kerja (`Rp / jam`).
      - **Pilar 3 (Antar / Kurir P2P):** Tarif Minimum s.d. 3 km (`Rp`) & Tarif per KM Lanjutan (`Rp / km`).
      - **Bagi Hasil Platform:** Persentase komisi platform (`%`).
    - Setiap nilai yang diubah dan disimpan langsung disinkronkan ke kalkulator aplikasi pelanggan dan kurir.
@@ -141,7 +157,9 @@ Panggung simulator menampilkan 3 aplikasi secara berdampingan dalam satu layar:
    - Kolom **Status Mitra**: Menampilkan status akun (`Akun Aktif` / `Ditangguhkan`) dan status kerja (`Kerja: Siaga (On)` / `Kerja: Istirahat (Off)`).
    - Kolom **Aksi Status Akun**: Dilengkapi saklar switch toggle (**Aktif** / **Suspend**).
    - Menggeser switch ke posisi *Suspend* seketika menonaktifkan akun mitra dari sistem dan mengunci saklar kerja di aplikasi kurir.
-4. **Buku Besar Transaksi Real-time:** Menampilkan log seluruh transaksi yang sedang berlangsung maupun yang telah selesai.
+4. **Buku Besar Transaksi Real-time & Modal Audit Finansial:**
+   - Tabel menampilkan seluruh log transaksi disertai tombol **"Detail"** di kolom aksi.
+   - Menekan tombol ini membuka modal audit terpadu yang menampilkan rincian rute, pemesan, nilai GMV kotor, penerimaan biaya aplikasi (kas platform 15%), dan hak bersih mitra kurir.
 
 ---
 

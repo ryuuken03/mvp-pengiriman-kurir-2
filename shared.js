@@ -28,7 +28,8 @@ const LOKALKIRIM_V2_INITIAL_DATA = {
     shoppingServiceFee: 5000,
     shoppingPerKm: 2500,
 
-    // 3. Servis & Jasa Bantuan
+    // 3. Servis & Jasa Bantuan (Skema Opsi 1)
+    serviceBaseInspectionFee: 15000, // Biaya transport kedatangan & pengecekan dasar di lokasi
     serviceHourlyRate: 17500,
 
     // Bagi Hasil / Biaya Platform
@@ -177,12 +178,14 @@ function formatKm(val) {
  * Biaya = Biaya Jasa Beli Flat + (Jarak × Tarif per KM)
  * Total Bayar Konsumen = Estimasi Talangan Belanja + Ongkir & Jasa
  */
-function calculateShoppingFee(distanceKm, shoppingEstimate = 0, state = null) {
+function calculateShoppingFee(distanceKm, shoppingEstimate = 0, state = null, storeCount = 1) {
   const currentState = state || loadSharedState();
   const rules = currentState.pricingRules || LOKALKIRIM_V2_INITIAL_DATA.pricingRules;
   const dist = Math.max(1, Number(distanceKm) || 1);
+  const count = Math.max(1, Number(storeCount) || 1);
 
-  const serviceFee = Number(rules.shoppingServiceFee || 5000);
+  const baseServiceFeePerStore = Number(rules.shoppingServiceFee || 5000);
+  const serviceFee = baseServiceFeePerStore * count;
   const deliveryFee = Math.round(dist * Number(rules.shoppingPerKm || 2500));
   const totalServiceAndDelivery = serviceFee + deliveryFee;
 
@@ -194,6 +197,8 @@ function calculateShoppingFee(distanceKm, shoppingEstimate = 0, state = null) {
   const goodsCost = Number(shoppingEstimate) || 0;
   const totalCustomerPay = goodsCost + totalServiceAndDelivery;
 
+  const storeText = count > 1 ? `Jasa Beli (${count} Toko: ${formatRp(serviceFee)})` : `Jasa Beli ${formatRp(serviceFee)}`;
+
   return {
     serviceFee,
     deliveryFee,
@@ -202,21 +207,23 @@ function calculateShoppingFee(distanceKm, shoppingEstimate = 0, state = null) {
     totalCustomerPay,
     platformFee,
     driverNetEarnings,
-    calculationNote: `Jasa Beli ${formatRp(serviceFee)} + Antar ${dist} km (${formatRp(deliveryFee)})`
+    storeCount: count,
+    calculationNote: `${storeText} + Antar ${dist} km (${formatRp(deliveryFee)})`
   };
 }
 
 /**
- * 2. Kalkulator Servis & Jasa Bantuan (Hourly / Task Worker)
- * Biaya = Durasi Jam × Tarif per Jam
+ * 2. Kalkulator Servis & Jasa Bantuan (Skema Opsi 1: Biaya Cek Dasar + Penawaran Biaya di Lokasi)
+ * Biaya Dasar (Pengecekan/Kedatangan): serviceBaseInspectionFee (Rp 15.000)
+ * Biaya Jasa Servis Riil: laborQuote (ditentukan oleh mitra/tukang di tempat, default 0 jika belum diajukan)
  */
-function calculateServiceFee(hours = 1, state = null) {
+function calculateServiceFee(baseFee = null, laborQuote = 0, state = null) {
   const currentState = state || loadSharedState();
   const rules = currentState.pricingRules || LOKALKIRIM_V2_INITIAL_DATA.pricingRules;
-  const h = Math.max(1, Number(hours) || 1);
 
-  const hourlyRate = Number(rules.serviceHourlyRate || 17500);
-  const totalFee = Math.round(h * hourlyRate);
+  const inspectionFee = baseFee !== null ? Number(baseFee) : Number(rules.serviceBaseInspectionFee || 15000);
+  const laborCost = Math.max(0, Number(laborQuote) || 0);
+  const totalFee = inspectionFee + laborCost;
 
   const platformFee = Math.max(
     Number(rules.platformFeeMin || 1000),
@@ -224,30 +231,36 @@ function calculateServiceFee(hours = 1, state = null) {
   );
   const driverNetEarnings = totalFee - platformFee;
 
+  const note = laborCost > 0
+    ? `Biaya Pengecekan (${formatRp(inspectionFee)}) + Jasa Servis Disetujui (${formatRp(laborCost)})`
+    : `Biaya Kedatangan & Cek Lokasi (${formatRp(inspectionFee)}) [Biaya jasa perbaikan disepakati di lokasi]`;
+
   return {
-    hours: h,
-    hourlyRate,
+    inspectionFee,
+    laborCost,
     totalFee,
     totalCustomerPay: totalFee,
     platformFee,
     driverNetEarnings,
-    calculationNote: `${h} Jam × ${formatRp(hourlyRate)}/jam`
+    calculationNote: note
   };
 }
 
 /**
  * 3. Kalkulator Antar / Kurir P2P (Point-to-Point)
- * Biaya = Max(Tarif Dasar Min, Jarak × Tarif per KM)
+ * Biaya = Max(Tarif Dasar Min, Jarak × Tarif per KM) + Biaya Tambahan Titik Singgah (jika ada)
  */
-function calculateDeliveryFee(distanceKm, state = null) {
+function calculateDeliveryFee(distanceKm, state = null, extraStops = 0) {
   const currentState = state || loadSharedState();
   const rules = currentState.pricingRules || LOKALKIRIM_V2_INITIAL_DATA.pricingRules;
   const dist = Math.max(1, Number(distanceKm) || 1);
+  const stops = Math.max(0, Number(extraStops) || 0);
 
   const baseFare = Number(rules.deliveryBaseFare || 8000);
   const perKm = Number(rules.deliveryPerKm || 2500);
   const rawFare = Math.round(dist * perKm);
-  const totalFee = Math.max(baseFare, rawFare);
+  const stopSurcharge = stops * 3000; // Biaya singgah per titik Rp 3.000
+  const totalFee = Math.max(baseFare, rawFare) + stopSurcharge;
 
   const platformFee = Math.max(
     Number(rules.platformFeeMin || 1000),
@@ -255,9 +268,13 @@ function calculateDeliveryFee(distanceKm, state = null) {
   );
   const driverNetEarnings = totalFee - platformFee;
 
-  const note = rawFare > baseFare
+  let note = rawFare > baseFare
     ? `${dist} km × ${formatRp(perKm)}/km`
     : `Tarif Dasar Minimum (s.d. 3 km)`;
+
+  if (stops > 0) {
+    note += ` + ${stops} Titik Singgah (${formatRp(stopSurcharge)})`;
+  }
 
   return {
     distanceKm: dist,
@@ -265,6 +282,8 @@ function calculateDeliveryFee(distanceKm, state = null) {
     totalCustomerPay: totalFee,
     platformFee,
     driverNetEarnings,
+    extraStops: stops,
+    stopSurcharge,
     calculationNote: note
   };
 }
@@ -280,25 +299,62 @@ function buildWhatsAppOrderDraft(order) {
 
   if (order.type === 'SHOPPING') {
     lines.push(`Layanan: Minta Dibelikan (#${order.id})`);
-    lines.push(`Tempat Beli: ${order.storeName || '-'}`);
-    lines.push(`Daftar Barang: ${order.shoppingList || '-'}`);
+    if (order.stores && order.stores.length > 1) {
+      lines.push(`Jumlah Toko: ${order.stores.length} Tempat Pembelian`);
+      order.stores.forEach((st, idx) => {
+        lines.push(`- Toko ${idx + 1}: ${st.name || '-'} (${st.address || '-'})`);
+        if (st.detail) lines.push(`  Patokan: ${st.detail}`);
+        if (st.items) lines.push(`  Barang: ${st.items}`);
+      });
+    } else {
+      lines.push(`Tempat Beli: ${order.storeName || '-'}`);
+      if (order.storeDetail) lines.push(`Patokan Toko: ${order.storeDetail}`);
+      lines.push(`Daftar Barang: ${order.shoppingList || '-'}`);
+    }
     lines.push(`Estimasi Talangan: ${formatRp(order.shoppingEstimate)}`);
     lines.push(`Ongkir & Jasa: ${formatRp(order.totalServiceAndDelivery)}`);
     lines.push(`Alamat Antar: ${order.dropoffAddress || '-'}`);
+    if (order.dropoffDetail) lines.push(`Patokan Rumah: ${order.dropoffDetail}`);
     lines.push(`Total Tagihan COD: ${formatRp(order.totalAmount)}`);
   } else if (order.type === 'SERVICE') {
     lines.push(`Layanan: Servis & Bantuan (#${order.id})`);
-    lines.push(`Kategori: ${order.serviceCategory || 'Bantuan Umum'}`);
-    lines.push(`Durasi: ${order.durationHours} Jam`);
+    lines.push(`Kategori: ${order.serviceCategory || 'Servis / Bantuan'}`);
+    lines.push(`Biaya Cek & Transport: ${formatRp(order.serviceBaseInspectionFee || 15000)}`);
+    if (order.serviceQuoteItems && order.serviceQuoteItems.length > 0) {
+      lines.push(`Rincian Jasa & Suku Cadang (${order.serviceQuoteItems.length} Item):`);
+      order.serviceQuoteItems.forEach(it => {
+        lines.push(`- ${it.name}: ${formatRp(it.cost)}`);
+      });
+      lines.push(`Subtotal Jasa & Part: ${formatRp(order.serviceLaborCost)}`);
+      lines.push(`Total Tagihan Disetujui: ${formatRp(order.totalAmount)}`);
+    } else if (order.serviceLaborCost && order.serviceLaborCost > 0) {
+      lines.push(`Biaya Jasa Servis: ${formatRp(order.serviceLaborCost)}`);
+      if (order.serviceQuoteNote) lines.push(`Rincian Servis: ${order.serviceQuoteNote}`);
+      lines.push(`Total Tagihan Disetujui: ${formatRp(order.totalAmount)}`);
+    } else {
+      lines.push(`Biaya Jasa Servis: Ditentukan & Disepakati di Lokasi`);
+      lines.push(`Total Tagihan Awal: ${formatRp(order.totalAmount || 15000)}`);
+    }
     lines.push(`Deskripsi Pekerjaan: ${order.workDescription || '-'}`);
     lines.push(`Lokasi Tugas: ${order.taskAddress || '-'}`);
-    lines.push(`Total Biaya: ${formatRp(order.totalAmount)}`);
+    if (order.taskDetail) lines.push(`Patokan Lokasi: ${order.taskDetail}`);
   } else {
     // DELIVERY
     lines.push(`Layanan: Antar / Kurir P2P (#${order.id})`);
     lines.push(`Kategori: ${order.deliveryCategory || 'Barang / Dokumen'}`);
     lines.push(`Titik Jemput: ${order.pickupAddress || '-'}`);
-    lines.push(`Titik Antar: ${order.dropoffAddress || '-'}`);
+    if (order.pickupDetail) lines.push(`Patokan Jemput: ${order.pickupDetail}`);
+
+    if (order.stops && order.stops.length > 1) {
+      lines.push(`Titik Pengantaran: ${order.stops.length} Lokasi`);
+      order.stops.forEach((st, idx) => {
+        lines.push(`- Tujuan ${idx + 1}: ${st.recipientName || 'Penerima'} (${st.address || '-'})`);
+        if (st.detail) lines.push(`  Patokan: ${st.detail}`);
+      });
+    } else {
+      lines.push(`Titik Antar: ${order.dropoffAddress || '-'}`);
+      if (order.dropoffDetail) lines.push(`Patokan Antar: ${order.dropoffDetail}`);
+    }
     lines.push(`Jarak: ${order.distanceKm} km`);
     lines.push(`Total Ongkir: ${formatRp(order.totalAmount)}`);
   }
@@ -327,6 +383,195 @@ function resetAllDataToDefault() {
   return fresh;
 }
 
+// =========================================================================
+// 7. KOMPONEN STRUK & RINCIAN PEMBAYARAN TERPADU (UNIFIED BILLING RECEIPT)
+// =========================================================================
+function renderUnifiedBillingReceipt(ord, role = 'CUSTOMER') {
+  if (!ord) return '';
+
+  let itemRowsHtml = '';
+
+  if (ord.type === 'SHOPPING') {
+    const isMultiStore = ord.stores && ord.stores.length > 1;
+    let storeDetails = '';
+    if (isMultiStore) {
+      storeDetails = ord.stores.map((st, i) => `
+        <div class="receipt-item-sub">
+          <span>&bull; Toko ${i + 1} (${st.name}): ${st.items || '-'}</span>
+        </div>
+      `).join('');
+    } else {
+      storeDetails = `
+        <div class="receipt-item-sub">
+          <span>&bull; ${ord.storeName || 'Toko'}: ${ord.shoppingList || '-'}</span>
+        </div>
+      `;
+    }
+
+    itemRowsHtml = `
+      <div class="receipt-section-title">Barang Belanjaan (Dana Talangan):</div>
+      ${storeDetails}
+      <div class="receipt-row">
+        <span>Uang Talangan Kasir:</span>
+        <span class="receipt-val">${formatRp(ord.shoppingEstimate || 0)}</span>
+      </div>
+      <div class="receipt-divider"></div>
+      <div class="receipt-section-title">Biaya Pengantaran & Layanan:</div>
+      <div class="receipt-row">
+        <span>Jasa Beli (${isMultiStore ? ord.stores.length + ' Toko' : '1 Toko'}):</span>
+        <span class="receipt-val">${formatRp(ord.serviceFee || 5000)}</span>
+      </div>
+      <div class="receipt-row">
+        <span>Ongkos Kirim Rute OSRM (${formatKm(ord.distanceKm)}):</span>
+        <span class="receipt-val">${formatRp(ord.shippingFee || 0)}</span>
+      </div>
+    `;
+  } else if (ord.type === 'SERVICE') {
+    let itemsDetailHtml = '';
+    if (ord.serviceQuoteItems && ord.serviceQuoteItems.length > 0) {
+      itemsDetailHtml = ord.serviceQuoteItems.map(it => `
+        <div class="receipt-row receipt-indent">
+          <span>&bull; ${it.name}:</span>
+          <span class="receipt-val">${formatRp(it.cost)}</span>
+        </div>
+      `).join('');
+    } else if (ord.serviceLaborCost && ord.serviceLaborCost > 0) {
+      itemsDetailHtml = `
+        <div class="receipt-row receipt-indent">
+          <span>&bull; ${ord.serviceQuoteNote || 'Jasa Servis & Perbaikan'}:</span>
+          <span class="receipt-val">${formatRp(ord.serviceLaborCost)}</span>
+        </div>
+      `;
+    } else {
+      itemsDetailHtml = `
+        <div class="receipt-row receipt-indent" style="color: var(--text-muted); font-style: italic;">
+          <span>&bull; Biaya Jasa Servis:</span>
+          <span>Ditentukan di Lokasi</span>
+        </div>
+      `;
+    }
+
+    itemRowsHtml = `
+      <div class="receipt-section-title">Biaya Pemeriksaan & Kedatangan:</div>
+      <div class="receipt-row">
+        <span>Biaya Kedatangan & Cek Dasar:</span>
+        <span class="receipt-val">${formatRp(ord.serviceBaseInspectionFee || 15000)}</span>
+      </div>
+      <div class="receipt-divider"></div>
+      <div class="receipt-section-title">Rincian Pekerjaan Jasa & Suku Cadang:</div>
+      ${itemsDetailHtml}
+      ${ord.serviceLaborCost > 0 ? `
+        <div class="receipt-row" style="font-weight: 700; margin-top: 4px;">
+          <span>Subtotal Jasa & Part:</span>
+          <span class="receipt-val">${formatRp(ord.serviceLaborCost)}</span>
+        </div>
+      ` : ''}
+    `;
+  } else {
+    // DELIVERY
+    itemRowsHtml = `
+      <div class="receipt-section-title">Rincian Pengantaran Kurir:</div>
+      <div class="receipt-row">
+        <span>Ongkir Jarak Rute OSRM (${formatKm(ord.distanceKm)}):</span>
+        <span class="receipt-val">${formatRp((ord.shippingFee || ord.totalAmount) - (ord.hasExtraDeliveryStop ? 3000 : 0))}</span>
+      </div>
+      ${ord.hasExtraDeliveryStop ? `
+        <div class="receipt-row">
+          <span>Biaya Titik Singgah Tambahan (Penerima 1):</span>
+          <span class="receipt-val">${formatRp(3000)}</span>
+        </div>
+      ` : ''}
+    `;
+  }
+
+  // Bagian Total Konsumen
+  const grandTotalBlock = `
+    <div class="receipt-total-box">
+      <div class="receipt-total-row">
+        <span>Total Tagihan Konsumen (COD):</span>
+        <span class="receipt-total-val">${formatRp(ord.totalAmount)}</span>
+      </div>
+      <div class="receipt-payment-method">Metode Pembayaran: Tunai di Tempat (COD)</div>
+    </div>
+  `;
+
+  // Bagian Tambahan untuk Driver (Potongan Aplikasi & Hak Bersih)
+  let driverFinancialsBlock = '';
+  if (role === 'DRIVER') {
+    driverFinancialsBlock = `
+      <div class="receipt-driver-box" style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px; margin-top: 10px;">
+        <div style="font-weight: 800; font-size: 0.74rem; color: #065F46; margin-bottom: 6px;">
+          Rincian Finansial & Bagi Hasil Mitra:
+        </div>
+        <div class="receipt-row">
+          <span>Uang Kas Diterima dari Konsumen (COD):</span>
+          <span class="receipt-val" style="font-weight: 800;">${formatRp(ord.totalAmount)}</span>
+        </div>
+        <div class="receipt-row" style="color: #DC2626;">
+          <span>Potongan Biaya Aplikasi Platform (15%):</span>
+          <span class="receipt-val" style="font-weight: 800; color: #DC2626;">- ${formatRp(ord.platformFee || 0)}</span>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-row" style="color: #059669; font-size: 0.84rem; font-weight: 800;">
+          <span>Hak Pendapatan Bersih Mitra:</span>
+          <span class="receipt-val" style="color: #059669; font-size: 0.95rem;">+ ${formatRp(ord.driverShare || 0)}</span>
+        </div>
+        <div style="font-size: 0.68rem; color: #047857; margin-top: 4px; line-height: 1.3;">
+          Total kas COD ${formatRp(ord.totalAmount)} masuk ke dompet kas Anda, dengan kewajiban setoran komisi platform ${formatRp(ord.platformFee || 0)}.
+        </div>
+      </div>
+    `;
+  }
+
+  // Bagian Tambahan untuk Admin (Audit Komisi Platform & Hak Driver)
+  let adminFinancialsBlock = '';
+  if (role === 'ADMIN') {
+    adminFinancialsBlock = `
+      <div class="receipt-admin-box" style="background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 6px; padding: 10px; margin-top: 10px;">
+        <div style="font-weight: 800; font-size: 0.74rem; color: #3730A3; margin-bottom: 6px;">
+          Buku Besar Finansial & Bagi Hasil Platform:
+        </div>
+        <div class="receipt-row">
+          <span>Nilai Transaksi Bruto (Gross GMV):</span>
+          <span class="receipt-val" style="font-weight: 800;">${formatRp(ord.totalAmount)}</span>
+        </div>
+        ${ord.shoppingEstimate ? `
+          <div class="receipt-row" style="color: var(--text-muted);">
+            <span>Dana Talangan Belanja Kasir:</span>
+            <span class="receipt-val">${formatRp(ord.shoppingEstimate)}</span>
+          </div>
+        ` : ''}
+        <div class="receipt-row" style="color: #1E40AF; font-size: 0.82rem; font-weight: 800;">
+          <span>Penerimaan Biaya Aplikasi (Kas Platform):</span>
+          <span class="receipt-val" style="color: #1E40AF;">+ ${formatRp(ord.platformFee || 0)}</span>
+        </div>
+        <div class="receipt-row" style="color: #059669; font-size: 0.82rem; font-weight: 800;">
+          <span>Hak Bersih Mitra Kurir:</span>
+          <span class="receipt-val" style="color: #059669;">+ ${formatRp(ord.driverShare || 0)}</span>
+        </div>
+        <div style="font-size: 0.68rem; color: #4338CA; margin-top: 4px; line-height: 1.3;">
+          Status Kas: Tercatat pada kas COD ditangan mitra (${ord.driverName || 'Belum Ditugaskan'}).
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="unified-receipt-card">
+      <div class="receipt-card-header">
+        <span class="receipt-card-title">Struk & Rincian Pembayaran</span>
+        <span class="receipt-order-id">#${ord.id}</span>
+      </div>
+      <div class="receipt-card-body">
+        ${itemRowsHtml}
+        ${grandTotalBlock}
+        ${driverFinancialsBlock}
+        ${adminFinancialsBlock}
+      </div>
+    </div>
+  `;
+}
+
 // Global Exports
 if (typeof window !== 'undefined') {
   window.LOKALKIRIM_V2_INITIAL_DATA = LOKALKIRIM_V2_INITIAL_DATA;
@@ -344,4 +589,5 @@ if (typeof window !== 'undefined') {
   window.calculateDeliveryFee = calculateDeliveryFee;
   window.buildWhatsAppOrderDraft = buildWhatsAppOrderDraft;
   window.resetAllDataToDefault = resetAllDataToDefault;
+  window.renderUnifiedBillingReceipt = renderUnifiedBillingReceipt;
 }

@@ -106,6 +106,15 @@
             </div>
 
             <div class="pricing-field-group">
+              <label class="input-label" for="cfgServiceBaseFee">Biaya Cek & Kedatangan Dasar</label>
+              <div class="input-group">
+                <span class="input-prefix">Rp</span>
+                <input type="number" id="cfgServiceBaseFee" class="input-field" step="1000" required>
+              </div>
+              <span class="input-subtext">Biaya transport survei/cek lokasi awal</span>
+            </div>
+
+            <div class="pricing-field-group">
               <label class="input-label" for="cfgServiceHourly">Tarif Tenaga Kerja (per jam)</label>
               <div class="input-group">
                 <span class="input-prefix">Rp</span>
@@ -210,6 +219,7 @@
               <th>Mitra Bertugas</th>
               <th>Nilai Transaksi</th>
               <th>Status Operasional</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody id="allOrdersTableBody">
@@ -220,6 +230,25 @@
     </section>
 
   </main>
+
+  <!-- MODAL DETAIL TRANSAKSI & BUKU BESAR AUDIT (ADMIN) -->
+  <div id="adminOrderDetailModal" class="location-modal-backdrop" style="display: none;">
+    <div class="location-modal-sheet" style="max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="location-modal-header">
+        <div>
+          <h3 class="location-modal-title" id="adminModalOrderTitle">Detail Transaksi & Audit Finansial</h3>
+          <p class="location-modal-sub" id="adminModalOrderSub">Rincian pesanan, struk terpadu, dan bagi hasil platform</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeAdminOrderModal()">Tutup</button>
+      </div>
+      <div class="modal-scroll-body" id="adminModalOrderBody" style="padding: 14px; overflow-y: auto; flex: 1;">
+        <!-- Populated dynamically by admin.js -->
+      </div>
+      <div class="location-modal-footer">
+        <button type="button" class="btn-admin" style="width: 100%; min-height: 44px;" onclick="closeAdminOrderModal()">Tutup Rincian</button>
+      </div>
+    </div>
+  </div>
 
   <script src="shared.js"></script>
   <script src="admin.js"></script>

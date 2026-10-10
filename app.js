@@ -103,28 +103,31 @@ function runDemoShopping() {
  * DEMO 2: Servis & Jasa Bantuan (Bersih-bersih Rumah 2 Jam)
  */
 function runDemoService() {
-  showToast('Memulai Demo 2: Pemesanan Jasa Tenaga Bersih-bersih 2 Jam...');
+  showToast('Memulai Demo 2: Pemesanan Servis AC & Tukang (Biaya Cek Rp 15.000)...');
   const s = loadSharedState();
-  const feeInfo = calculateServiceFee(2, s);
+  const feeInfo = calculateServiceFee(15000, 0, s);
 
   const newOrder = {
     id: 'SRV-' + Math.floor(1000 + Math.random() * 9000),
     type: 'SERVICE',
-    orderTypeLabel: 'Servis & Bantuan Tenaga',
+    orderTypeLabel: 'Servis & Bantuan Tukang',
     customerName: 'Ibu Ratna Dewi',
     customerPhone: '0813-8899-2211',
-    serviceCategory: 'Bersih-bersih Rumah / Gudang',
+    serviceCategory: 'Servis AC / Cuci AC & Elektronik',
     taskAddress: 'Perumahan Taman Pinang Indah Blok B-4, Sidoarjo',
     taskCoords: [-7.4439, 112.7058],
     dropoffCoords: [-7.4439, 112.7058],
-    workDescription: 'Bantu sapu, pel, dan rapikan kardus di ruang gudang belakang lantai 1',
-    durationHours: 2,
-    hourlyRate: feeInfo.hourlyRate,
+    workDescription: 'AC kamar bocor air dan hembusan kurang dingin, butuh dicek dan dicuci',
+    serviceBaseInspectionFee: feeInfo.inspectionFee,
+    serviceLaborCost: 0,
+    serviceQuoteItems: [],
+    serviceQuoteNote: '',
+    quoteStatus: 'PENDING_INSPECTION',
     platformFee: feeInfo.platformFee,
     driverShare: feeInfo.driverNetEarnings,
     totalAmount: feeInfo.totalCustomerPay,
-    paymentMethod: 'Tunai di Tempat',
-    customerNotes: 'Peralatan sapu dan pel sudah disiapkan di lokasi',
+    paymentMethod: 'Tunai di Tempat (COD)',
+    customerNotes: 'Tangga lipat sudah disiapkan di teras rumah',
     status: 'WAITING_DRIVER',
     createdAt: new Date().toISOString()
   };

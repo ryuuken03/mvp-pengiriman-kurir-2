@@ -123,6 +123,25 @@
 
   </main>
 
+  <!-- MODAL DETAIL TRANSAKSI & RINCIAN TAGIHAN (DRIVER) -->
+  <div id="driverOrderDetailModal" class="location-modal-backdrop" style="display: none;">
+    <div class="location-modal-sheet" style="max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="location-modal-header">
+        <div>
+          <h3 class="location-modal-title" id="driverModalOrderTitle">Detail Transaksi Tugas</h3>
+          <p class="location-modal-sub" id="driverModalOrderSub">Rincian pendapatan, potongan aplikasi, dan struk pesanan</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeDriverOrderModal()">Tutup</button>
+      </div>
+      <div class="modal-scroll-body" id="driverModalOrderBody" style="padding: 14px; overflow-y: auto; flex: 1;">
+        <!-- Populated dynamically by driver.js -->
+      </div>
+      <div class="location-modal-footer">
+        <button type="button" class="btn-primary" style="width: 100%; min-height: 44px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;" onclick="closeDriverOrderModal()">Tutup Rincian</button>
+      </div>
+    </div>
+  </div>
+
   <script src="shared.js"></script>
   <script src="vendor/leaflet.js"></script>
   <script src="driver.js"></script>

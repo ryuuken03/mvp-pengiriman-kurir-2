@@ -101,24 +101,111 @@
             </div>
           </div>
 
-          <div class="grid-2-col">
-            <div class="form-field">
-              <label class="field-label" for="shopStoreName">Tempat Pembelian (Warung / Toko / Kios)</label>
-              <input type="text" id="shopStoreName" class="field-input" value="Bebek Goreng H. Slamet"
-                placeholder="Contoh: Nasi Goreng Pak Min / Apotek K-24" required>
+          <div class="location-group-card">
+            <div class="location-card-header">
+              <span class="location-badge-label">Titik A: Tempat Pembelian Utama</span>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label" for="shopStoreName">Tempat Pembelian (Warung / Toko / Kios)</label>
+                <input type="text" id="shopStoreName" class="field-input" value="Bebek Goreng H. Slamet"
+                  placeholder="Contoh: Bebek Sinjay / Nasi Goreng Pak Min / Apotek K-24" required>
+              </div>
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Peta (Titik A)</label>
+                <div class="location-preview-card" id="previewCard_shop_store">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status">Titik Terpilih</span>
+                    <span class="preview-coords-text" id="previewCoords_shop_store">-7.4439, 112.7058</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_shop_store">Jl. Taman Pinang Indah No. 8, Sidoarjo</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('shop_store')">Pilih Titik di Peta</button>
+                <input type="hidden" id="shopStoreAddress" value="Jl. Taman Pinang Indah No. 8, Sidoarjo">
+                <input type="hidden" id="shopStoreLat" value="-7.4439">
+                <input type="hidden" id="shopStoreLng" value="112.7058">
+              </div>
             </div>
             <div class="form-field">
-              <label class="field-label" for="shopStoreAddress">Lokasi Tempat Pembelian (Titik A)</label>
-              <input type="text" id="shopStoreAddress" class="field-input"
-                value="Jl. Taman Pinang Indah No. 8, Sidoarjo" placeholder="Patokan atau alamat tempat beli" required>
+              <label class="field-label" for="shopStoreDetail">Detail Patokan Toko (Opsional)</label>
+              <input type="text" id="shopStoreDetail" class="field-input"
+                placeholder="Contoh: Kios tenda warna hijau depan minimarket" value="Deretan ruko timur jalan">
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopItems">Daftar Barang yang Dibelikan</label>
+              <textarea id="shopItems" class="field-textarea"
+                placeholder="Tulis rincian menu/barang, porsi, atau varian (Contoh: 2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah)"
+                required>2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah</textarea>
             </div>
           </div>
 
-          <div class="form-field">
-            <label class="field-label" for="shopItems">Daftar Barang yang Dibelikan</label>
-            <textarea id="shopItems" class="field-textarea"
-              placeholder="Tulis rincian menu/barang, porsi, atau varian (Contoh: 2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah)"
-              required>2 Porsi Bebek Goreng Kremes + 2 Nasi Putih + Sambal Korek dipisah</textarea>
+          <!-- TOMBOL OPSIONAL TOKO SINGGAH -->
+          <button type="button" class="btn-add-stop-trigger" id="btnAddExtraStore" onclick="toggleExtraStore(true)">
+            + Tambah Toko Singgah Tambahan (Maksimal 1 Toko)
+          </button>
+
+          <!-- BLOK TOKO SINGGAH TAMBAHAN (TERSEMBUNYI SECARA DEFAULT) -->
+          <div class="location-group-card is-extra-stop" id="extraStoreSection" style="display: none;">
+            <div class="location-card-header">
+              <span class="location-badge-label secondary">Titik Singgah: Toko Tambahan</span>
+              <button type="button" class="btn-remove-stop" onclick="toggleExtraStore(false)">Hapus Toko Singgah</button>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label" for="shopStoreName2">Nama Toko Singgah</label>
+                <input type="text" id="shopStoreName2" class="field-input" placeholder="Contoh: Apotek K-24 / Toko Buah">
+              </div>
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Peta (Toko Singgah)</label>
+                <div class="location-preview-card" id="previewCard_shop_store_2">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status" id="previewBadge_shop_store_2">Belum Dipilih</span>
+                    <span class="preview-coords-text" id="previewCoords_shop_store_2">-</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_shop_store_2">Klik tombol untuk menentukan titik toko singgah di peta</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('shop_store_2')">Pilih Titik di Peta</button>
+                <input type="hidden" id="shopStoreAddress2" value="">
+                <input type="hidden" id="shopStoreLat2" value="">
+                <input type="hidden" id="shopStoreLng2" value="">
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopStoreDetail2">Detail Patokan Toko Singgah (Opsional)</label>
+              <input type="text" id="shopStoreDetail2" class="field-input" placeholder="Contoh: Sebelah apotek, ruko lantai 1">
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="shopItems2">Daftar Barang Belanja di Toko Singgah</label>
+              <textarea id="shopItems2" class="field-textarea" placeholder="Rincian barang/obat yang dibelikan di toko kedua"></textarea>
+            </div>
+          </div>
+
+          <!-- LOKASI PENGANTARAN (TITIK AKHIR) -->
+          <div class="location-group-card">
+            <div class="location-card-header">
+              <span class="location-badge-label">Titik Tujuan: Alamat Pengantaran</span>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Pengantaran (Titik B)</label>
+                <div class="location-preview-card" id="previewCard_shop_dropoff">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status">Titik Terpilih</span>
+                    <span class="preview-coords-text" id="previewCoords_shop_dropoff">-7.4485, 112.7160</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_shop_dropoff">Jl. Pahlawan No. 15, Sidoarjo Kota</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('shop_dropoff')">Pilih Titik di Peta</button>
+                <input type="hidden" id="shopDropoff" value="Jl. Pahlawan No. 15, Sidoarjo Kota">
+                <input type="hidden" id="shopDropoffLat" value="-7.4485">
+                <input type="hidden" id="shopDropoffLng" value="112.7160">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="shopDropoffDetail">Detail Patokan Alamat Rumah / Penerima</label>
+                <input type="text" id="shopDropoffDetail" class="field-input"
+                  placeholder="Contoh: Rumah tingkat 2 pagar abu-abu, depan pos kamling" value="Pagar hitam nomor 15 dekat lapangan">
+              </div>
+            </div>
           </div>
 
           <div class="grid-2-col">
@@ -127,9 +214,9 @@
               <input type="number" id="shopEstimate" class="field-input" min="5000" step="5000" value="55000" required>
             </div>
             <div class="form-field">
-              <label class="field-label" for="shopDropoff">Alamat Pengantaran ke Lokasi Anda (Titik B)</label>
-              <input type="text" id="shopDropoff" class="field-input" value="Jl. Pahlawan No. 15, Sidoarjo Kota"
-                required>
+              <label class="field-label" for="shopNotes">Catatan Tambahan (Opsional)</label>
+              <input type="text" id="shopNotes" class="field-input"
+                placeholder="Contoh: Bebek minta paha, uang kembalian disiapkan">
             </div>
           </div>
 
@@ -139,51 +226,27 @@
               struk riil ditambah ongkir dan biaya jasa saat barang tiba di lokasi.</div>
           </div>
 
-          <!-- PETA LEAFLET & OPENSTREETMAP RUTE BERKENDARA NYATA -->
-          <div class="map-card-wrapper">
-            <div class="map-header-row">
-              <div class="map-header-title">
-                <span>Peta Rute Jalan Raya (Leaflet & OpenStreetMap)</span>
-                <span class="route-badge-live" id="shopRouteStatus">Rute Berkendara Nyata</span>
+          <!-- KARTU RINGKASAN RUTE KOMPAK (OPSI A MOBILE FRIENDLY) -->
+          <div class="route-summary-accordion-card">
+            <div class="route-summary-bar">
+              <div class="route-summary-left">
+                <span class="route-badge-pill">Rute OSRM</span>
+                <div class="route-metrics-line">
+                  <span class="route-metric-km" id="shopDistanceText">2,6 km</span> &bull; <span class="route-metric-dur" id="shopDurationText">~4 Menit</span>
+                </div>
+                <div class="route-road-status" id="shopRouteStatus">Rute Berkendara Nyata</div>
               </div>
-              <div class="map-hint-text">Geser Pin A (Beli) atau Pin B (Antar) pada peta</div>
+              <button type="button" class="btn-accordion-toggle" id="btnToggleShopMap" onclick="toggleRouteAccordion('shop')">
+                Lihat Peta Rute
+              </button>
             </div>
-
-            <!-- KANVAS PETA -->
-            <div class="map-canvas-container" id="shopMapCanvas"></div>
-
-            <!-- STRIP INFORMASI RUTE HASIL KALKULASI BERKENDARA NYATA -->
-            <div class="route-stats-strip">
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Jarak Rute Jalan Raya:</span>
-                <span class="stat-meta-val" id="shopDistanceText">2,6 km</span>
-              </div>
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Estimasi Waktu Tempuh:</span>
-                <span class="stat-meta-val" id="shopDurationText">~4 Menit</span>
-              </div>
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Navigasi:</span>
-                <span class="stat-meta-val" style="color: var(--brand-accent);">Jalan Raya Nyata</span>
+            <div class="route-accordion-drawer" id="shopMapDrawer" style="display: none;">
+              <div class="compact-map-container" id="shopMapCanvas"></div>
+              <div class="compact-map-footer">
+                <span>Pratinjau jalur berkendara kurir menuju alamat tujuan</span>
+                <button type="button" class="btn-text-close-map" onclick="toggleRouteAccordion('shop')">Tutup Peta</button>
               </div>
             </div>
-
-            <!-- PRESET RUTE CEPAT SIDOARJO -->
-            <div class="preset-route-row">
-              <span class="preset-caption">Rute Cepat Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('taman_pinang_pahlawan')">Taman Pinang
-                &rarr; Jl. Pahlawan</button>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('larangan_alun2')">Pasar Larangan &rarr;
-                Alun-Alun</button>
-              <button type="button" class="preset-btn" onclick="applyShopPreset('waru_sidoarjo')">Ruko Waru &rarr;
-                Sidoarjo Kota</button>
-            </div>
-          </div>
-
-          <div class="form-field" style="margin-top: 10px;">
-            <label class="field-label" for="shopNotes">Catatan Tambahan (Opsional)</label>
-            <input type="text" id="shopNotes" class="field-input"
-              placeholder="Contoh: Bebek minta bagian paha, uang kembalian disiapkan">
           </div>
 
           <!-- Kalkulasi Biaya Transparan -->
@@ -193,7 +256,7 @@
               <span id="shopGoodsCostText" class="price-val">Rp 55.000</span>
             </div>
             <div class="price-row">
-              <span>Biaya Jasa Beli:</span>
+              <span id="shopServiceFeeLabel">Biaya Jasa Beli:</span>
               <span id="shopServiceFeeText" class="price-val">Rp 5.000</span>
             </div>
             <div class="price-row">
@@ -243,90 +306,101 @@
             </div>
           </div>
 
-          <div class="grid-2-col">
-            <div class="form-field">
-              <label class="field-label" for="serviceCategory">Kategori Bantuan</label>
-              <select id="serviceCategory" class="field-select" required>
-                <option value="Bersih-bersih Rumah / Gudang">Bersih-bersih Rumah / Gudang</option>
-                <option value="Angkat Barang / Pindahan">Angkat Barang / Pindahan Ringan</option>
-                <option value="Temenin Aktivitas">Temenin Aktivitas (Aman & Wajar)</option>
-                <option value="Antre Tiket / Pengurusan Dokumen">Antre Tiket / Urus Dokumen</option>
-                <option value="Bantuan Harian Lainnya">Bantuan Harian Lainnya</option>
-              </select>
+          <div class="form-field">
+            <label class="field-label" for="serviceCategory">Kategori Servis & Bantuan</label>
+            <select id="serviceCategory" class="field-select" required>
+              <option value="Servis AC / Cuci AC & Elektronik">Servis AC / Cuci AC & Elektronik</option>
+              <option value="Pompa Air & Saluran Pipa (Plumbing)">Pompa Air & Saluran Pipa (Plumbing)</option>
+              <option value="Kelistrikan & Perbaikan Lampu / Instalasi">Kelistrikan & Perbaikan Lampu / Instalasi</option>
+              <option value="Tukang Bangunan, Atap Bocor & Las">Tukang Bangunan, Atap Bocor & Las</option>
+              <option value="Servis Motor / Ganti Ban / Mogok">Servis Motor / Ganti Ban / Mogok</option>
+              <option value="Bersih-bersih Rumah / Gudang">Bersih-bersih Rumah / Gudang</option>
+              <option value="Angkat Barang / Pindahan">Angkat Barang / Pindahan</option>
+              <option value="Bantuan Harian Lainnya">Bantuan Harian Lainnya</option>
+            </select>
+          </div>
+
+          <!-- LOKASI PENGERJAAN TUGAS DENGAN MODAL PICKER -->
+          <div class="location-group-card">
+            <div class="location-card-header">
+              <span class="location-badge-label">Titik Lokasi Pengerjaan Tugas</span>
             </div>
-            <div class="form-field">
-              <label class="field-label" for="serviceLocation">Lokasi Pengerjaan Tugas</label>
-              <input type="text" id="serviceLocation" class="field-input"
-                value="Perumahan Taman Pinang Indah Blok B-4, Sidoarjo" required>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Kerja di Peta</label>
+                <div class="location-preview-card" id="previewCard_service_location">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status">Titik Terpilih</span>
+                    <span class="preview-coords-text" id="previewCoords_service_location">-7.4439, 112.7058</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_service_location">Perumahan Taman Pinang Indah Blok B-4, Sidoarjo</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('service_location')">Pilih Titik di Peta</button>
+                <input type="hidden" id="serviceLocation" value="Perumahan Taman Pinang Indah Blok B-4, Sidoarjo">
+                <input type="hidden" id="serviceLat" value="-7.4439">
+                <input type="hidden" id="serviceLng" value="112.7058">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="serviceLocationDetail">Detail Patokan Alamat / Rumah</label>
+                <input type="text" id="serviceLocationDetail" class="field-input"
+                  placeholder="Contoh: Blok B-4 pagar cokelat, masuk dari pos timur" value="Blok B-4 depan taman bermain">
+              </div>
             </div>
           </div>
 
           <div class="form-field">
-            <label class="field-label" for="serviceDesc">Rincian Instruksi / Tugas yang Dikerjakan</label>
-            <textarea id="serviceDesc" class="field-textarea" placeholder="Jelaskan kebutuhan pekerjaan secara spesifik"
-              required>Bantu sapu, pel, dan rapikan kardus di ruang gudang belakang rumah lantai 1.</textarea>
+            <label class="field-label" for="serviceDesc">Rincian Masalah / Kerusakan / Tugas Servis</label>
+            <textarea id="serviceDesc" class="field-textarea" placeholder="Jelaskan kebutuhan servis secara spesifik (Contoh: AC kamar bocor air dan tidak dingin / Pompa air mendengung)"
+              required>AC kamar bocor air dan hembusan angin kurang dingin, mohon diperiksa dan diservis.</textarea>
           </div>
 
-          <!-- PETA LEAFLET & OPENSTREETMAP LOKASI TUGAS (SERVIS & BANTUAN) -->
-          <div class="map-card-wrapper">
-            <div class="map-header-row">
-              <div class="map-header-title">
-                <span>Peta Lokasi Tugas (Leaflet & OpenStreetMap)</span>
-                <span class="route-badge-live" id="serviceRouteStatus">Titik Lokasi Terpilih</span>
+          <!-- KARTU RINGKASAN LOKASI TUGAS (OPSI A MOBILE FRIENDLY) -->
+          <div class="route-summary-accordion-card">
+            <div class="route-summary-bar">
+              <div class="route-summary-left">
+                <span class="route-badge-pill">Lokasi Kerja</span>
+                <div class="route-metrics-line">
+                  <span class="route-metric-km" id="serviceLocationPreviewBadge">Taman Pinang Indah</span>
+                </div>
+                <div class="route-road-status" id="serviceRouteStatus">Titik Lokasi Bantuan Terpilih</div>
               </div>
-              <div class="map-hint-text">Geser Pin ke alamat rumah/lokasi kerja Anda</div>
+              <button type="button" class="btn-accordion-toggle" id="btnToggleServiceMap" onclick="toggleRouteAccordion('service')">
+                Lihat Lokasi di Peta
+              </button>
             </div>
-
-            <!-- KANVAS PETA -->
-            <div class="map-canvas-container" id="serviceMapCanvas"></div>
-
-            <!-- PRESET LOKASI CEPAT SIDOARJO -->
-            <div class="preset-route-row">
-              <span class="preset-caption">Pilihan Lokasi Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('taman_pinang')">Taman
-                Pinang</button>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('puri_indah')">Puri Indah</button>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('alun_alun')">Alun-Alun</button>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('buduran')">Buduran</button>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('waru')">Waru</button>
-              <button type="button" class="preset-btn" onclick="applyServicePreset('candi')">Candi</button>
+            <div class="route-accordion-drawer" id="serviceMapDrawer" style="display: none;">
+              <div class="compact-map-container" id="serviceMapCanvas"></div>
+              <div class="compact-map-footer">
+                <span>Pratinjau titik rumah/gudang pengerjaan tugas</span>
+                <button type="button" class="btn-text-close-map" onclick="toggleRouteAccordion('service')">Tutup Peta</button>
+              </div>
             </div>
           </div>
 
-          <!-- Durasi Jam Selector -->
-          <div class="slider-box">
-            <div class="slider-header-row">
-              <span class="field-label">Durasi Waktu Kerja</span>
-              <span id="serviceHoursText" class="slider-value-text">2 Jam</span>
-            </div>
-            <input type="range" id="serviceHoursSlider" class="range-slider" min="1" max="8" step="1" value="2">
-            <div class="preset-chips">
-              <button type="button" class="preset-btn" onclick="setServiceHours(1)">1 Jam</button>
-              <button type="button" class="preset-btn" onclick="setServiceHours(2)">2 Jam</button>
-              <button type="button" class="preset-btn" onclick="setServiceHours(3)">3 Jam</button>
-              <button type="button" class="preset-btn" onclick="setServiceHours(4)">4 Jam</button>
-            </div>
+          <div class="notice-box" style="margin-top: 12px;">
+            <div class="notice-title">Skema Biaya Servis & Tukang Ahli (Opsi 1)</div>
+            <div class="notice-desc">Biaya Rp 15.000 adalah biaya transport kedatangan dan survei/pengecekan awal di tempat. Biaya jasa perbaikan dan penggantian suku cadang (jika ada) akan diajukan oleh mitra kurir & tukang di aplikasi setelah pengecekan fisik di lokasi untuk persetujuan Anda.</div>
           </div>
 
           <div class="form-field">
             <label class="field-label" for="serviceNotes">Catatan Tambahan (Opsional)</label>
             <input type="text" id="serviceNotes" class="field-input"
-              placeholder="Contoh: Alat kebersihan sudah disediakan di lokasi">
+              placeholder="Contoh: Tangga lipat sudah disiapkan di teras">
           </div>
 
           <!-- Kalkulasi Biaya -->
           <div class="price-breakdown-card">
             <div class="price-row">
-              <span>Tarif Tenaga Kerja per Jam:</span>
-              <span id="serviceRateText" class="price-val">Rp 17.500 / Jam</span>
+              <span>Biaya Kedatangan & Cek Lokasi:</span>
+              <span id="serviceBaseFeeText" class="price-val">Rp 15.000</span>
             </div>
             <div class="price-row">
-              <span>Durasi Pengerjaan:</span>
-              <span id="serviceHoursCalcText" class="price-val">2 Jam</span>
+              <span>Estimasi Biaya Jasa Servis:</span>
+              <span class="price-val" style="color: var(--text-muted); font-size: 0.72rem;">Ditentukan & Disetujui di Lokasi</span>
             </div>
             <div class="price-row total-row">
-              <span>Total Biaya Jasa:</span>
-              <span id="serviceTotalText" class="price-val highlight">Rp 35.000</span>
+              <span>Total Tagihan Awal (Saat Order):</span>
+              <span id="serviceTotalText" class="price-val highlight">Rp 15.000</span>
             </div>
           </div>
 
@@ -356,37 +430,123 @@
         </div>
 
         <form id="formDelivery">
-          <div class="grid-2-col">
-            <div class="form-field">
-              <label class="field-label" for="delSenderName">Nama Pengirim / Pemesan</label>
-              <input type="text" id="delSenderName" class="field-input" value="Bambang Sudiro" required>
+          <!-- TITIK PENJEMPUTAN (TITIK A) -->
+          <div class="location-group-card">
+            <div class="location-card-header">
+              <span class="location-badge-label">Titik A: Lokasi Penjemputan Paket</span>
             </div>
-            <div class="form-field">
-              <label class="field-label" for="delSenderPhone">Nomor WhatsApp</label>
-              <input type="tel" id="delSenderPhone" class="field-input" value="0812-4455-6677" required>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label" for="delSenderName">Nama Pengirim / Pemesan</label>
+                <input type="text" id="delSenderName" class="field-input" value="Bambang Sudiro" required>
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delSenderPhone">Nomor WhatsApp Pengirim</label>
+                <input type="tel" id="delSenderPhone" class="field-input" value="0812-4455-6677" required>
+              </div>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Penjemputan (Titik A)</label>
+                <div class="location-preview-card" id="previewCard_del_pickup">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status">Titik Terpilih</span>
+                    <span class="preview-coords-text" id="previewCoords_del_pickup">-7.4485, 112.7160</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_del_pickup">Jl. Pahlawan No. 20, Sidoarjo Kota</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('del_pickup')">Pilih Titik di Peta</button>
+                <input type="hidden" id="delPickup" value="Jl. Pahlawan No. 20, Sidoarjo Kota">
+                <input type="hidden" id="delPickupLat" value="-7.4485">
+                <input type="hidden" id="delPickupLng" value="112.7160">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delPickupDetail">Detail Patokan Penjemputan</label>
+                <input type="text" id="delPickupDetail" class="field-input"
+                  placeholder="Contoh: Kantor ruko no 20 lantai 1 samping bank" value="Ruko kantor samping bank Mandiri">
+              </div>
             </div>
           </div>
 
-          <div class="form-field">
-            <label class="field-label" for="delPickup">Titik Penjemputan (Pin A)</label>
-            <input type="text" id="delPickup" class="field-input" value="Jl. Pahlawan No. 20, Sidoarjo Kota" required>
+          <!-- TOMBOL OPSIONAL TITIK ANTAR SINGGAH -->
+          <button type="button" class="btn-add-stop-trigger" id="btnAddExtraStop" onclick="toggleExtraDeliveryStop(true)">
+            + Tambah Titik Antar Singgah (Maksimal 1 Titik Tambahan)
+          </button>
+
+          <!-- BLOK TITIK ANTAR SINGGAH (TERSEMBUNYI SECARA DEFAULT) -->
+          <div class="location-group-card is-extra-stop" id="extraStopSection" style="display: none;">
+            <div class="location-card-header">
+              <span class="location-badge-label secondary">Titik Singgah: Pengantaran Tambahan</span>
+              <button type="button" class="btn-remove-stop" onclick="toggleExtraDeliveryStop(false)">Hapus Titik Singgah</button>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label" for="delStopRecipientName2">Nama Penerima Singgah</label>
+                <input type="text" id="delStopRecipientName2" class="field-input" placeholder="Nama penerima perhentian 1">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delStopRecipientPhone2">Nomor WhatsApp Penerima Singgah</label>
+                <input type="tel" id="delStopRecipientPhone2" class="field-input" placeholder="08xx-xxxx-xxxx">
+              </div>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Singgah (Penerima 1)</label>
+                <div class="location-preview-card" id="previewCard_del_stop_2">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status" id="previewBadge_del_stop_2">Belum Dipilih</span>
+                    <span class="preview-coords-text" id="previewCoords_del_stop_2">-</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_del_stop_2">Klik tombol untuk menentukan titik antar singgah di peta</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('del_stop_2')">Pilih Titik di Peta</button>
+                <input type="hidden" id="delStopAddress2" value="">
+                <input type="hidden" id="delStopLat2" value="">
+                <input type="hidden" id="delStopLng2" value="">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delStopDetail2">Detail Patokan Antar Singgah</label>
+                <input type="text" id="delStopDetail2" class="field-input" placeholder="Contoh: Rumah pagar hijau depan pos satpam">
+              </div>
+            </div>
           </div>
 
-          <div class="grid-2-col">
-            <div class="form-field">
-              <label class="field-label" for="delRecipientName">Nama Penerima</label>
-              <input type="text" id="delRecipientName" class="field-input" value="Indah Kusuma" required>
+          <!-- TITIK PENGANTARAN UTAMA (TITIK AKHIR) -->
+          <div class="location-group-card">
+            <div class="location-card-header">
+              <span class="location-badge-label">Titik Tujuan: Alamat Pengantaran Utama</span>
             </div>
-            <div class="form-field">
-              <label class="field-label" for="delRecipientPhone">Nomor WhatsApp Penerima</label>
-              <input type="tel" id="delRecipientPhone" class="field-input" value="0857-9900-1122" required>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label" for="delRecipientName">Nama Penerima Utama</label>
+                <input type="text" id="delRecipientName" class="field-input" value="Indah Kusuma" required>
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delRecipientPhone">Nomor WhatsApp Penerima</label>
+                <input type="tel" id="delRecipientPhone" class="field-input" value="0857-9900-1122" required>
+              </div>
             </div>
-          </div>
-
-          <div class="form-field">
-            <label class="field-label" for="delDropoff">Titik Pengantaran (Pin B)</label>
-            <input type="text" id="delDropoff" class="field-input" value="Perumahan Buduran Asri Blok C-2, Buduran"
-              required>
+            <div class="grid-2-col">
+              <div class="form-field">
+                <label class="field-label">Titik Lokasi Pengantaran (Titik B)</label>
+                <div class="location-preview-card" id="previewCard_del_dropoff">
+                  <div class="preview-card-header">
+                    <span class="preview-badge-status">Titik Terpilih</span>
+                    <span class="preview-coords-text" id="previewCoords_del_dropoff">-7.4305, 112.7295</span>
+                  </div>
+                  <div class="preview-address-long" id="previewAddress_del_dropoff">Perumahan Buduran Asri Blok C-2, Buduran</div>
+                </div>
+                <button type="button" class="btn-pick-location-trigger" onclick="openLocationPicker('del_dropoff')">Pilih Titik di Peta</button>
+                <input type="hidden" id="delDropoff" value="Perumahan Buduran Asri Blok C-2, Buduran">
+                <input type="hidden" id="delDropoffLat" value="-7.4305">
+                <input type="hidden" id="delDropoffLng" value="112.7295">
+              </div>
+              <div class="form-field">
+                <label class="field-label" for="delDropoffDetail">Detail Patokan Alamat Pengantaran</label>
+                <input type="text" id="delDropoffDetail" class="field-input"
+                  placeholder="Contoh: Blok C-2 rumah cat abu-abu dekat masjid" value="Blok C-2 rumah cat abu-abu dekat masjid">
+              </div>
+            </div>
           </div>
 
           <div class="grid-2-col">
@@ -406,44 +566,26 @@
             </div>
           </div>
 
-          <!-- PETA LEAFLET & OPENSTREETMAP RUTE BERKENDARA NYATA (DELIVERY) -->
-          <div class="map-card-wrapper">
-            <div class="map-header-row">
-              <div class="map-header-title">
-                <span>Peta Rute Jalan Raya (Leaflet & OpenStreetMap)</span>
-                <span class="route-badge-live" id="delRouteStatus">Rute Berkendara Nyata</span>
+          <!-- KARTU RINGKASAN RUTE KOMPAK (OPSI A MOBILE FRIENDLY) -->
+          <div class="route-summary-accordion-card">
+            <div class="route-summary-bar">
+              <div class="route-summary-left">
+                <span class="route-badge-pill">Rute OSRM</span>
+                <div class="route-metrics-line">
+                  <span class="route-metric-km" id="delDistanceText">4,5 km</span> &bull; <span class="route-metric-dur" id="delDurationText">~11 Menit</span>
+                </div>
+                <div class="route-road-status" id="delRouteStatus">Rute Berkendara Nyata</div>
               </div>
-              <div class="map-hint-text">Geser Pin A (Jemput) atau Pin B (Antar) pada peta</div>
+              <button type="button" class="btn-accordion-toggle" id="btnToggleDelMap" onclick="toggleRouteAccordion('del')">
+                Lihat Peta Rute
+              </button>
             </div>
-
-            <!-- KANVAS PETA -->
-            <div class="map-canvas-container" id="delMapCanvas"></div>
-
-            <!-- STRIP INFORMASI RUTE HASIL KALKULASI BERKENDARA NYATA -->
-            <div class="route-stats-strip">
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Jarak Rute Jalan Raya:</span>
-                <span class="stat-meta-val" id="delDistanceText">4,5 km</span>
+            <div class="route-accordion-drawer" id="delMapDrawer" style="display: none;">
+              <div class="compact-map-container" id="delMapCanvas"></div>
+              <div class="compact-map-footer">
+                <span>Pratinjau jalur pengantaran dokumen/paket</span>
+                <button type="button" class="btn-text-close-map" onclick="toggleRouteAccordion('del')">Tutup Peta</button>
               </div>
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Estimasi Waktu Tempuh:</span>
-                <span class="stat-meta-val" id="delDurationText">~11 Menit</span>
-              </div>
-              <div class="route-stat-item">
-                <span class="stat-meta-label">Navigasi:</span>
-                <span class="stat-meta-val" style="color: var(--brand-accent);">Jalan Raya Nyata</span>
-              </div>
-            </div>
-
-            <!-- PRESET RUTE CEPAT SIDOARJO -->
-            <div class="preset-route-row">
-              <span class="preset-caption">Rute Cepat Sidoarjo:</span>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('pahlawan_buduran')">Pahlawan &rarr;
-                Buduran (4,5 km)</button>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('alun2_puri_indah')">Alun-Alun &rarr;
-                Puri Indah (3,8 km)</button>
-              <button type="button" class="preset-btn" onclick="applyDelPreset('candi_kota')">Candi &rarr; Sidoarjo Kota
-                (4,9 km)</button>
             </div>
           </div>
 
@@ -501,6 +643,98 @@
     </section>
 
   </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL PEMILIH LOKASI (LOCATION PICKER MODAL)             -->
+  <!-- ======================================================== -->
+  <div id="locationPickerModal" class="location-modal-backdrop" style="display: none;">
+    <div class="location-modal-sheet">
+      <div class="location-modal-header">
+        <div>
+          <h3 class="location-modal-title" id="locationModalTitle">Tentukan Titik di Peta</h3>
+          <p class="location-modal-sub" id="locationModalSub">Geser peta untuk menempatkan pin di lokasi presisi</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeLocationPicker()">Tutup</button>
+      </div>
+
+      <!-- FLOATING SEARCH BAR & LIVE AUTOCOMPLETE -->
+      <div class="picker-search-bar-wrap">
+        <div class="picker-search-input-box">
+          <input type="text" id="pickerSearchInput" class="picker-search-input"
+            placeholder="Cari nama jalan, perumahan, atau tempat di Sidoarjo..." autocomplete="off">
+          <button type="button" class="btn-clear-search" id="btnClearPickerSearch" onclick="clearPickerSearch()" style="display: none;">Hapus</button>
+        </div>
+        <div class="picker-search-dropdown" id="pickerSearchDropdown" style="display: none;"></div>
+      </div>
+
+      <!-- Presets Cepat Sidoarjo di Modal -->
+      <div class="location-preset-chips">
+        <span class="preset-chip-title">Preset:</span>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4478, 112.7183], 'Alun-Alun Sidoarjo Kota')">Alun-Alun</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4439, 112.7058], 'Taman Pinang Indah, Sidoarjo')">Taman Pinang</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4602, 112.7145], 'Pasar Tradisional Larangan')">Pasar Larangan</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4485, 112.7160], 'Jl. Pahlawan Sidoarjo Kota')">Jl. Pahlawan</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4580, 112.6980], 'Perumahan Puri Indah, Sidoarjo')">Puri Indah</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4305, 112.7295], 'Perumahan Buduran Asri, Buduran')">Buduran</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.3525, 112.7280], 'Kawasan Ruko Waru, Sidoarjo')">Waru</button>
+        <button type="button" class="modal-chip-btn" onclick="setPickerLocation([-7.4815, 112.7220], 'Kecamatan Candi, Sidoarjo')">Candi</button>
+      </div>
+
+      <!-- Kanvas Peta Leaflet Modal dengan Center Pin & FAB GPS -->
+      <div class="picker-map-wrapper" id="pickerMapWrapper">
+        <div id="pickerMapCanvas" class="picker-map-canvas"></div>
+
+        <!-- FIXED CENTER PIN OVERLAY (GOOGLE MAPS STYLE) -->
+        <div class="picker-center-pin-overlay" id="pickerCenterPin">
+          <div class="center-pin-marker">
+            <div class="center-pin-head"></div>
+            <div class="center-pin-stem"></div>
+          </div>
+          <div class="center-pin-shadow"></div>
+        </div>
+
+        <!-- FAB TOMBOL LOKASI SAAT INI (GPS) -->
+        <button type="button" class="btn-picker-gps-fab" id="btnPickerCurrentGps" onclick="locateUserGpsPosition()" title="Gunakan Lokasi Saya Saat Ini (GPS)">
+          <span class="gps-fab-label">GPS</span>
+        </button>
+      </div>
+
+      <!-- Status Informasi Titik Terpilih -->
+      <div class="picker-info-bar">
+        <div class="picker-info-label">Alamat / Patokan Terpilih:</div>
+        <div class="picker-info-value" id="pickerCurrentAddressText">Memuat titik...</div>
+        <div class="picker-info-coord" id="pickerCurrentCoordsText">-7.4478, 112.7183</div>
+      </div>
+
+      <!-- Aksi Konfirmasi -->
+      <div class="location-modal-footer">
+        <button type="button" class="btn-primary btn-confirm-location" onclick="confirmPickedLocation()">
+          Gunakan Titik Lokasi Ini
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL DETAIL TRANSAKSI & RINCIAN TAGIHAN (CUSTOMER)     -->
+  <!-- ======================================================== -->
+  <div id="customerOrderDetailModal" class="location-modal-backdrop" style="display: none;">
+    <div class="location-modal-sheet" style="max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="location-modal-header">
+        <div>
+          <h3 class="location-modal-title" id="custModalOrderTitle">Detail Transaksi</h3>
+          <p class="location-modal-sub" id="custModalOrderSub">Rincian pesanan dan struk pembayaran terpadu</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeCustomerOrderModal()">Tutup</button>
+      </div>
+      <div class="modal-scroll-body" id="custModalOrderBody" style="padding: 14px; overflow-y: auto; flex: 1;">
+        <!-- Populated dynamically by customer.js -->
+      </div>
+      <div class="location-modal-footer">
+        <button type="button" class="btn-primary" style="width: 100%;" onclick="closeCustomerOrderModal()">Tutup Rincian</button>
+      </div>
+    </div>
+  </div>
 
   <script src="shared.js"></script>
   <script src="vendor/leaflet.js"></script>
