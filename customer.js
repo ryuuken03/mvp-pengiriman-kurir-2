@@ -75,52 +75,81 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =========================================================================
-// 1. TAB SWITCHER DENGAN INVALIDATE SIZE LEAFLET
+// 1. UNIVERSAL TAB & VIEW SWITCHER (LANDING, ORDER TABS, MY ORDERS)
 // =========================================================================
 function initTabSwitchers() {
   const cards = document.querySelectorAll('.service-card');
   const btnOrders = document.getElementById('btnOrdersTab');
-  const sectionTitle = document.getElementById('activeSectionTitle');
 
   cards.forEach(card => {
     card.addEventListener('click', () => {
       const targetTab = card.getAttribute('data-tab');
-      activateTab(targetTab);
-
-      cards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-
-      if (targetTab === 'tab-shopping') {
-        sectionTitle.textContent = 'Formulir Layanan: Minta Dibelikan';
-        setTimeout(() => { if (shopMap) shopMap.invalidateSize(); }, 120);
-      }
-      if (targetTab === 'tab-service') {
-        sectionTitle.textContent = 'Formulir Layanan: Servis & Bantuan';
-        setTimeout(() => { if (serviceMap) serviceMap.invalidateSize(); }, 120);
-      }
-      if (targetTab === 'tab-delivery') {
-        sectionTitle.textContent = 'Formulir Layanan: Antar / Kirim';
-        setTimeout(() => { if (delMap) delMap.invalidateSize(); }, 120);
-      }
+      navigateToTab(targetTab);
     });
   });
 
   if (btnOrders) {
     btnOrders.addEventListener('click', () => {
-      cards.forEach(c => c.classList.remove('active'));
-      activateTab('tab-orders');
-      sectionTitle.textContent = 'Status & Riwayat Pesanan Saya';
+      navigateToTab('tab-orders');
     });
   }
 
-  // Buka tab awal jika ada hash di URL (misal #tab-service)
+  // Buka tab awal jika ada hash di URL (misal #tab-service), default Landing Page
   if (window.location.hash) {
     const hashTab = window.location.hash.replace('#', '');
-    const matchingCard = document.querySelector(`.service-card[data-tab="${hashTab}"]`);
-    if (matchingCard) {
-      matchingCard.click();
+    if (document.getElementById(hashTab)) {
+      navigateToTab(hashTab);
+      return;
     }
   }
+
+  // Buka Landing Page (Pengenalan Jasa) secara default saat aplikasi dibuka
+  navigateToTab('tab-landing');
+}
+
+function navigateToTab(tabId) {
+  const orderContainer = document.getElementById('orderModeContainer');
+  const sectionTitle = document.getElementById('activeSectionTitle');
+  const cards = document.querySelectorAll('.service-card');
+  const navItems = document.querySelectorAll('.bottom-nav-item');
+
+  // Reset highlight bottom nav
+  navItems.forEach(item => item.classList.remove('active'));
+
+  if (tabId === 'tab-landing') {
+    if (orderContainer) orderContainer.style.display = 'none';
+    activateTab('tab-landing');
+    document.getElementById('navItemHome')?.classList.add('active');
+  } else if (tabId === 'tab-orders') {
+    if (orderContainer) orderContainer.style.display = 'none';
+    activateTab('tab-orders');
+    document.getElementById('navItemOrders')?.classList.add('active');
+    renderCustomerOrders();
+  } else {
+    // Mode Formulir Pemesanan: Shopping, Service, Delivery
+    if (orderContainer) orderContainer.style.display = 'block';
+    activateTab(tabId);
+    document.getElementById('navItemOrder')?.classList.add('active');
+
+    cards.forEach(c => c.classList.remove('active'));
+
+    if (tabId === 'tab-shopping') {
+      document.getElementById('cardServiceShopping')?.classList.add('active');
+      if (sectionTitle) sectionTitle.textContent = 'Formulir Layanan: Minta Dibelikan';
+      setTimeout(() => { if (shopMap) shopMap.invalidateSize(); }, 120);
+    } else if (tabId === 'tab-service') {
+      document.getElementById('cardServiceService')?.classList.add('active');
+      if (sectionTitle) sectionTitle.textContent = 'Formulir Layanan: Servis & Bantuan';
+      setTimeout(() => { if (serviceMap) serviceMap.invalidateSize(); }, 120);
+    } else if (tabId === 'tab-delivery') {
+      document.getElementById('cardServiceDelivery')?.classList.add('active');
+      if (sectionTitle) sectionTitle.textContent = 'Formulir Layanan: Antar / Kirim';
+      setTimeout(() => { if (delMap) delMap.invalidateSize(); }, 120);
+    }
+  }
+
+  // Scroll ke atas halaman secara halus
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function activateTab(tabId) {
@@ -954,7 +983,7 @@ function submitShoppingOrder() {
 
   const alertStoreText = storeCount > 1 ? ' (2 Toko Singgah)' : '';
   alert(`Pesanan #${newOrder.id}${alertStoreText} dengan rute jalan ${formatKm(dist)} berhasil disiarkan ke mitra terdekat.`);
-  activateTab('tab-orders');
+  navigateToTab('tab-orders');
   renderCustomerOrders();
 }
 
@@ -1113,7 +1142,7 @@ function submitServiceOrder() {
   saveSharedState(state, true, 'SERVICE_ORDER_CREATED');
 
   alert(`Pesanan Servis #${newOrder.id} berhasil disiarkan. Biaya awal cek lokasi ${formatRp(newOrder.serviceBaseInspectionFee)}. Biaya jasa perbaikan akan diajukan tukang setelah pemeriksaan fisik.`);
-  activateTab('tab-orders');
+  navigateToTab('tab-orders');
   renderCustomerOrders();
 }
 
@@ -1443,7 +1472,7 @@ function submitDeliveryOrder() {
 
   const alertStopText = hasExtraDeliveryStop ? ' (2 Titik Pengantaran)' : '';
   alert(`Pesanan Kurir #${newOrder.id}${alertStopText} dengan rute jalan ${formatKm(dist)} berhasil disiarkan.`);
-  activateTab('tab-orders');
+  navigateToTab('tab-orders');
   renderCustomerOrders();
 }
 
@@ -1468,6 +1497,12 @@ function renderCustomerOrders() {
 
   const orders = state.orders || [];
   if (badge) badge.textContent = orders.length;
+
+  const bottomBadge = document.getElementById('bottomNavBadgeCount');
+  if (bottomBadge) {
+    bottomBadge.textContent = orders.length;
+    bottomBadge.style.display = orders.length > 0 ? 'inline-flex' : 'none';
+  }
 
   if (orders.length === 0) {
     container.innerHTML = `
@@ -1761,6 +1796,7 @@ window.openCustomerOrderModal = openCustomerOrderModal;
 window.closeCustomerOrderModal = closeCustomerOrderModal;
 window.approveServiceQuoteFromModal = approveServiceQuoteFromModal;
 window.rejectServiceQuoteFromModal = rejectServiceQuoteFromModal;
+window.navigateToTab = navigateToTab;
 
 
 

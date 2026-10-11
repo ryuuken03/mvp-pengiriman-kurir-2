@@ -39,47 +39,155 @@
 
   <main class="container">
 
-    <!-- HERO SERVICE SELECTOR (3 PILAR UTAMA MTM) -->
-    <section class="services-hero">
-      <div class="services-grid">
+    <!-- ======================================================== -->
+    <!-- TAB 0: PENGENALAN JASA (LANDING / BERANDA VIEW)          -->
+    <!-- ======================================================== -->
+    <section class="tab-pane active" id="tab-landing">
+      <div class="landing-hero-card">
+        <div class="landing-hero-badge">Platform Bantuan & Kurir Terpadu</div>
+        <h2 class="landing-hero-title">Solusi Belanja Titip, Antar Cepat & Servis Harian</h2>
+        <p class="landing-hero-desc">
+          Platform terpadu yang menghubungkan warga langsung dengan mitra kurir dan teknisi lokal di Sidoarjo, Malang, dan sekitarnya.
+        </p>
 
-        <!-- PILAR 1: MINTA DIBELIKAN -->
-        <button type="button" class="service-card active" data-tab="tab-shopping" id="cardServiceShopping">
-          <!-- <div class="service-indicator">Pilar 1</div> -->
-          <div class="service-title">Minta Dibelikan</div>
-          <div class="service-desc">Makanan, Warung Bebas, Apotek & Sembako</div>
+        <div class="landing-trust-row">
+          <div class="trust-pill">
+            <span class="trust-pill-dot"></span>
+            <span>Talangan Tunai Mitra (COD)</span>
+          </div>
+          <div class="trust-pill">
+            <span class="trust-pill-dot"></span>
+            <span>Tarif Rute Jalan Riil OSRM</span>
+          </div>
+          <div class="trust-pill">
+            <span class="trust-pill-dot"></span>
+            <span>Kontak Langsung WhatsApp</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 KARTU PENGENALAN PILAR LAYANAN -->
+      <div class="landing-section-header">
+        <h3 class="landing-section-title">Pilihan Layanan Utama</h3>
+      </div>
+
+      <div class="landing-services-list">
+        <!-- PILAR 1: BELANJA -->
+        <div class="landing-service-card" onclick="navigateToTab('tab-shopping')">
+          <div class="landing-card-top">
+            <span class="service-pill-tag tag-blue">Pilar 1</span>
+            <span class="service-pricing-badge">Mulai Rp 5.000 + Ongkir</span>
+          </div>
+          <h4 class="landing-card-title">Minta Dibelikan (Personal Shopper)</h4>
+          <p class="landing-card-desc">
+            Titip beli makanan di warung PKL, resto bebas, apotek, minimarket, atau pasar tradisional. Belanjaan ditalangi tunai oleh mitra kurir di awal (COD). Mendukung tambah 1 toko singgah.
+          </p>
+          <div class="landing-card-footer">
+            <span class="landing-action-link">Buka Formulir Pesan &rarr;</span>
+          </div>
+        </div>
+
+        <!-- PILAR 2: ANTAR / KIRIM -->
+        <div class="landing-service-card" onclick="navigateToTab('tab-delivery')">
+          <div class="landing-card-top">
+            <span class="service-pill-tag tag-emerald">Pilar 2</span>
+            <span class="service-pricing-badge">Rp 2.500 / km Jalan Raya</span>
+          </div>
+          <h4 class="landing-card-title">Antar / Kirim Cepat (Point-to-Point)</h4>
+          <p class="landing-card-desc">
+            Pengantaran langsung tanpa transit untuk surat penting, dokumen notaris, barang pribadi/dagangan, makanan siap santap, hingga antar jemput warga. Mendukung multi-drop penerima.
+          </p>
+          <div class="landing-card-footer">
+            <span class="landing-action-link">Buka Formulir Antar &rarr;</span>
+          </div>
+        </div>
+
+        <!-- PILAR 3: SERVIS & BANTUAN -->
+        <div class="landing-service-card" onclick="navigateToTab('tab-service')">
+          <div class="landing-card-top">
+            <span class="service-pill-tag tag-amber">Pilar 3</span>
+            <span class="service-pricing-badge">Biaya Cek Rp 15.000</span>
+          </div>
+          <h4 class="landing-card-title">Servis & Jasa Bantuan Tenaga</h4>
+          <p class="landing-card-desc">
+            Panggilan teknisi perbaikan AC, pompa air/plumbing, kelistrikan, atap bocor, serta jasa angkat barang pindahan dan bersih-bersih rumah. Biaya jasa perbaikan disepakati transparan di lokasi.
+          </p>
+          <div class="landing-card-footer">
+            <span class="landing-action-link">Panggil Teknisi &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARA KERJA SISTEMATIS (3 LANGKAH) -->
+      <div class="landing-how-box">
+        <h4 class="landing-how-title">Mekanisme Pemesanan</h4>
+        <div class="landing-steps-grid">
+          <div class="step-card">
+            <span class="step-num">1</span>
+            <div class="step-heading">Tentukan Titik di Peta</div>
+            <div class="step-text">Pilih alamat jemput dan tujuan dengan pin presisi atau pencarian nama jalan.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">2</span>
+            <div class="step-heading">Rincian & Biaya Transparan</div>
+            <div class="step-text">Tulis daftar kebutuhan; sistem menghitung jarak rute jalan raya dan total biaya COD.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">3</span>
+            <div class="step-heading">Mitra Menuju Lokasi</div>
+            <div class="step-text">Pesanan diterima mitra terdekat; koordinasi langsung via WhatsApp tanpa perantara.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOMBOL CTA UTAMA -->
+      <div class="landing-cta-wrap">
+        <button type="button" class="btn-primary btn-cta-main" onclick="navigateToTab('tab-shopping')">
+          Mulai Buat Pesanan
         </button>
-
-        <!-- PILAR 2: SERVIS & BANTUAN -->
-        <button type="button" class="service-card" data-tab="tab-service" id="cardServiceService">
-          <!-- <div class="service-indicator">Pilar 2</div> -->
-          <div class="service-title">Servis & Bantuan</div>
-          <div class="service-desc">Bersih-bersih, Angkat Barang, Temenin & Asisten</div>
+        <button type="button" class="btn-secondary btn-cta-sub" onclick="navigateToTab('tab-orders')">
+          Pantau Pesanan Saya
         </button>
-
-        <!-- PILAR 3: ANTAR / KIRIM -->
-        <button type="button" class="service-card" data-tab="tab-delivery" id="cardServiceDelivery">
-          <!-- <div class="service-indicator">Pilar 3</div> -->
-          <div class="service-title">Antar / Kirim</div>
-          <div class="service-desc">Kirim Paket Dokumen & Antar Jemput Warga</div>
-        </button>
-
       </div>
     </section>
 
-    <!-- SUB-NAV / ORDER TRACKER BUTTON -->
-    <nav class="sub-nav-bar">
-      <div class="sub-nav-label" id="activeSectionTitle">Formulir Layanan: Minta Dibelikan</div>
-      <button type="button" class="btn-orders-tab" id="btnOrdersTab" data-tab="tab-orders">
-        <span>Pesanan Saya</span>
-        <span class="badge-order-count" id="activeOrderBadge">0</span>
-      </button>
-    </nav>
+    <!-- WRAPPER UNTUK MODE PEMESANAN (PILAR SELECTOR & FORMULIR) -->
+    <div id="orderModeContainer" style="display: none;">
+      <!-- HERO SERVICE SELECTOR (3 PILAR UTAMA MTM) -->
+      <section class="services-hero">
+        <div class="services-grid">
+          <!-- PILAR 1: MINTA DIBELIKAN -->
+          <button type="button" class="service-card" data-tab="tab-shopping" id="cardServiceShopping">
+            <div class="service-title">Minta Dibelikan</div>
+            <div class="service-desc">Makanan, Warung Bebas, Apotek & Sembako</div>
+          </button>
+          <!-- PILAR 2: SERVIS & BANTUAN -->
+          <button type="button" class="service-card" data-tab="tab-service" id="cardServiceService">
+            <div class="service-title">Servis & Bantuan</div>
+            <div class="service-desc">Bersih-bersih, Angkat Barang, Temenin & Asisten</div>
+          </button>
+          <!-- PILAR 3: ANTAR / KIRIM -->
+          <button type="button" class="service-card" data-tab="tab-delivery" id="cardServiceDelivery">
+            <div class="service-title">Antar / Kirim</div>
+            <div class="service-desc">Kirim Paket Dokumen & Antar Jemput Warga</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- SUB-NAV / ORDER TRACKER BUTTON -->
+      <nav class="sub-nav-bar">
+        <div class="sub-nav-label" id="activeSectionTitle">Formulir Layanan: Minta Dibelikan</div>
+        <button type="button" class="btn-orders-tab" id="btnOrdersTab" data-tab="tab-orders">
+          <span>Pesanan Saya</span>
+          <span class="badge-order-count" id="activeOrderBadge">0</span>
+        </button>
+      </nav>
+    </div>
 
     <!-- ======================================================== -->
     <!-- TAB 1: MINTA DIBELIKAN (SHOPPING / JASTIP BEBAS)         -->
     <!-- ======================================================== -->
-    <section class="tab-pane active" id="tab-shopping">
+    <section class="tab-pane" id="tab-shopping">
       <div class="surface-box">
         <div class="surface-header">
           <div>
@@ -735,6 +843,48 @@
       </div>
     </div>
   </div>
+
+  <!-- ======================================================== -->
+  <!-- FIXED BOTTOM NAVIGATION BAR (ALA GOJEK / GRAB)           -->
+  <!-- ======================================================== -->
+  <nav class="bottom-nav-bar" id="bottomNavBar">
+    <div class="bottom-nav-inner">
+      <button type="button" class="bottom-nav-item active" id="navItemHome" onclick="navigateToTab('tab-landing')">
+        <span class="bottom-nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </span>
+        <span class="bottom-nav-text">Beranda</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" id="navItemOrder" onclick="navigateToTab('tab-shopping')">
+        <span class="bottom-nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </span>
+        <span class="bottom-nav-text">Pesan Layanan</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" id="navItemOrders" onclick="navigateToTab('tab-orders')">
+        <span class="bottom-nav-icon nav-icon-badge-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span class="bottom-nav-badge" id="bottomNavBadgeCount" style="display: none;">0</span>
+        </span>
+        <span class="bottom-nav-text">Pesanan Saya</span>
+      </button>
+    </div>
+  </nav>
 
   <script src="shared.js"></script>
   <script src="vendor/leaflet.js"></script>
